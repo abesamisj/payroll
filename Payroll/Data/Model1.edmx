@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PayrollModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BasicPay">
+          <Key>
+            <PropertyRef Name="BasicPayId" />
+          </Key>
+          <Property Name="BasicPayId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BasicPayValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="BasicPayDescription" Type="varchar" MaxLength="250" />
+          <Property Name="UserPersonalInformationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Deduction">
+          <Key>
+            <PropertyRef Name="DeductionId" />
+          </Key>
+          <Property Name="DeductionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeductionValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DeductionName" Type="varchar" MaxLength="250" />
+          <Property Name="DeductionDescription" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="500" />
+          <Property Name="DepartmentDescription" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Income">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Name="IncomeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IncomeValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IncomeName" Type="varchar" MaxLength="250" />
+          <Property Name="IncomeDescription" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="UserPersonalInformation">
+          <Key>
+            <PropertyRef Name="UserPersonalInformationId" />
+          </Key>
+          <Property Name="UserPersonalInformationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="varchar" MaxLength="250" />
+          <Property Name="FirstName" Type="varchar" MaxLength="250" />
+          <Property Name="LastName" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="UserRoles">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserDescription" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="UserRoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="PayrollModelStoreContainer">
+          <EntitySet Name="BasicPay" EntityType="Self.BasicPay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Deduction" EntityType="Self.Deduction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Income" EntityType="Self.Income" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPersonalInformation" EntityType="Self.UserPersonalInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BasicPay">
+          <Key>
+            <PropertyRef Name="BasicPayId" />
+          </Key>
+          <Property Name="BasicPayId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BasicPayValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="BasicPayDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="UserPersonalInformationId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Deduction">
+          <Key>
+            <PropertyRef Name="DeductionId" />
+          </Key>
+          <Property Name="DeductionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeductionValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DeductionName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DeductionDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Income">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Name="IncomeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncomeValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IncomeName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IncomeDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserPersonalInformation">
+          <Key>
+            <PropertyRef Name="UserPersonalInformationId" />
+          </Key>
+          <Property Name="UserPersonalInformationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserRoleId" />
+          </Key>
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserRoleId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="PayrollEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BasicPays" EntityType="Self.BasicPay" />
+          <EntitySet Name="Deductions" EntityType="Self.Deduction" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Incomes" EntityType="Self.Income" />
+          <EntitySet Name="UserPersonalInformations" EntityType="Self.UserPersonalInformation" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PayrollModelStoreContainer" CdmEntityContainer="PayrollEntities">
+          <EntitySetMapping Name="BasicPays">
+            <EntityTypeMapping TypeName="PayrollModel.BasicPay">
+              <MappingFragment StoreEntitySet="BasicPay">
+                <ScalarProperty Name="BasicPayId" ColumnName="BasicPayId" />
+                <ScalarProperty Name="BasicPayValue" ColumnName="BasicPayValue" />
+                <ScalarProperty Name="BasicPayDescription" ColumnName="BasicPayDescription" />
+                <ScalarProperty Name="UserPersonalInformationId" ColumnName="UserPersonalInformationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deductions">
+            <EntityTypeMapping TypeName="PayrollModel.Deduction">
+              <MappingFragment StoreEntitySet="Deduction">
+                <ScalarProperty Name="DeductionId" ColumnName="DeductionId" />
+                <ScalarProperty Name="DeductionValue" ColumnName="DeductionValue" />
+                <ScalarProperty Name="DeductionName" ColumnName="DeductionName" />
+                <ScalarProperty Name="DeductionDescription" ColumnName="DeductionDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="PayrollModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="DepartmentDescription" ColumnName="DepartmentDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Incomes">
+            <EntityTypeMapping TypeName="PayrollModel.Income">
+              <MappingFragment StoreEntitySet="Income">
+                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
+                <ScalarProperty Name="IncomeValue" ColumnName="IncomeValue" />
+                <ScalarProperty Name="IncomeName" ColumnName="IncomeName" />
+                <ScalarProperty Name="IncomeDescription" ColumnName="IncomeDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPersonalInformations">
+            <EntityTypeMapping TypeName="PayrollModel.UserPersonalInformation">
+              <MappingFragment StoreEntitySet="UserPersonalInformation">
+                <ScalarProperty Name="UserPersonalInformationId" ColumnName="UserPersonalInformationId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="PayrollModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+                <ScalarProperty Name="UserDescription" ColumnName="UserDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PayrollModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserRoleId" ColumnName="UserRoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
