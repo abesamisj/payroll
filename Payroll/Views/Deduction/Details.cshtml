@@ -1,0 +1,52 @@
+﻿@model Payroll.Models.DeductionViewModels
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Deduction Detail</h2>
+
+<div>
+    <h4>DeductionViewModels</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeductionValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeductionValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeductionName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeductionName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DeductionDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DeductionDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DeductionId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

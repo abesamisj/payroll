@@ -25,7 +25,6 @@ namespace Payroll.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<BasicPay> BasicPays { get; set; }
         public virtual DbSet<Deduction> Deductions { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Income> Incomes { get; set; }

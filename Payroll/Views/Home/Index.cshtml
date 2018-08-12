@@ -2,24 +2,22 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead"></p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg"></a></p>
-</div>
+
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            
-        </p>
-        <p></p>
+        <h2>Maintenance</h2>
+
+       <p> @Html.ActionLink("Employees", "Employees", "Home", null, new { @class = "btn btn-default" }) </p>
+       <p>@Html.ActionLink("Incomes", "Index", "Income", null, new { @class = "btn btn-default" })</p>
+       <p>@Html.ActionLink("Deductions", "Index", "Deduction", null, new { @class = "btn btn-default" })</p>
+       <p>@Html.ActionLink("Departments", "Index", "Department", null, new { @class = "btn btn-default" })</p>
+
+
     </div>
     <div class="col-md-4">
-        <h2></h2>
-        <p></p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Process Payroll</h2>
+        @Html.ActionLink("Payroll", "Index", "Payroll", null, new { @class = "btn btn-default" })
     </div>
     <div class="col-md-4">
         <h2></h2>

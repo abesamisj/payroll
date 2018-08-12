@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Payroll.Models.DeductionViewModels>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Deductions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DeductionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeductionValue)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DeductionDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            @*<th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr onclick="location.href = '@(Url.Action("Edit", "Deduction", new { id = item.DeductionId }, null))'">
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DeductionName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeductionValue)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DeductionDescription)
+            </td>
+            <td>
+                @if (item.Active)
+                {
+                    <p>Active</p>
+                }
+                else
+                {
+                    <p>In Active</p>
+                }
+            </td>
+            @*<td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.DeductionId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.DeductionId })
+            </td>
+        </tr>
+        }
+
+    </table>*@
+<div class="code-cut">
+    @Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(c => c.DeductionId).Titled("Deduction Id").Filterable(true);
+    columns.Add(c => c.DeductionName).Titled("Deduction Name").Filterable(true);
+    columns.Add(c => c.DeductionValue).Titled("Amount").Filterable(true);
+    columns.Add(c => c.DeductionDescription).Titled("Deduction Description");
+    columns.Add(c => c.Active).Titled("Status");
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(o => Html.ActionLink("Edit", "Edit", new { id = o.DeductionId }));
+
+}).WithPaging(20).Sortable(true)
+</div>

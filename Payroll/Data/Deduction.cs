@@ -18,5 +18,6 @@ namespace Payroll.Data
         public Nullable<decimal> DeductionValue { get; set; }
         public string DeductionName { get; set; }
         public string DeductionDescription { get; set; }
+        public Nullable<int> Active { get; set; }
     }
 }

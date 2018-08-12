@@ -5,15 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PayrollModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="BasicPay">
-          <Key>
-            <PropertyRef Name="BasicPayId" />
-          </Key>
-          <Property Name="BasicPayId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BasicPayValue" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="BasicPayDescription" Type="varchar" MaxLength="250" />
-          <Property Name="UserPersonalInformationId" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Deduction">
           <Key>
             <PropertyRef Name="DeductionId" />
@@ -22,14 +13,16 @@
           <Property Name="DeductionValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="DeductionName" Type="varchar" MaxLength="250" />
           <Property Name="DeductionDescription" Type="varchar" MaxLength="250" />
+          <Property Name="Active" Type="int" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="DepartmentId" />
           </Key>
           <Property Name="DepartmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DepartmentName" Type="varchar" MaxLength="500" />
-          <Property Name="DepartmentDescription" Type="varchar" MaxLength="500" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="250" />
+          <Property Name="DepartmentDescription" Type="varchar" MaxLength="250" />
+          <Property Name="Active" Type="int" />
         </EntityType>
         <EntityType Name="Income">
           <Key>
@@ -39,6 +32,7 @@
           <Property Name="IncomeValue" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IncomeName" Type="varchar" MaxLength="250" />
           <Property Name="IncomeDescription" Type="varchar" MaxLength="250" />
+          <Property Name="Active" Type="int" />
         </EntityType>
         <EntityType Name="UserPersonalInformation">
           <Key>
@@ -48,6 +42,10 @@
           <Property Name="EmployeeId" Type="varchar" MaxLength="250" />
           <Property Name="FirstName" Type="varchar" MaxLength="250" />
           <Property Name="LastName" Type="varchar" MaxLength="250" />
+          <Property Name="Address" Type="varchar(max)" />
+          <Property Name="Position" Type="varchar" MaxLength="250" />
+          <Property Name="BasicPay" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Active" Type="int" />
         </EntityType>
         <EntityType Name="UserRoles">
           <Key>
@@ -66,7 +64,6 @@
           <Property Name="UserRoleId" Type="int" Nullable="false" />
         </EntityType>
         <EntityContainer Name="PayrollModelStoreContainer">
-          <EntitySet Name="BasicPay" EntityType="Self.BasicPay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Deduction" EntityType="Self.Deduction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Income" EntityType="Self.Income" Schema="dbo" store:Type="Tables" />
@@ -78,15 +75,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="BasicPay">
-          <Key>
-            <PropertyRef Name="BasicPayId" />
-          </Key>
-          <Property Name="BasicPayId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BasicPayValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="BasicPayDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="UserPersonalInformationId" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="Deduction">
           <Key>
             <PropertyRef Name="DeductionId" />
@@ -95,14 +83,16 @@
           <Property Name="DeductionValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="DeductionName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="DeductionDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Int32" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="DepartmentId" />
           </Key>
           <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DepartmentName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="DepartmentDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Int32" />
         </EntityType>
         <EntityType Name="Income">
           <Key>
@@ -112,6 +102,7 @@
           <Property Name="IncomeValue" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="IncomeName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="IncomeDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Int32" />
         </EntityType>
         <EntityType Name="UserPersonalInformation">
           <Key>
@@ -121,6 +112,10 @@
           <Property Name="EmployeeId" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="FirstName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="BasicPay" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Position" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -139,7 +134,6 @@
           <Property Name="UserRoleId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="PayrollEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="BasicPays" EntityType="Self.BasicPay" />
           <EntitySet Name="Deductions" EntityType="Self.Deduction" />
           <EntitySet Name="Departments" EntityType="Self.Department" />
           <EntitySet Name="Incomes" EntityType="Self.Income" />
@@ -153,19 +147,10 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PayrollModelStoreContainer" CdmEntityContainer="PayrollEntities">
-          <EntitySetMapping Name="BasicPays">
-            <EntityTypeMapping TypeName="PayrollModel.BasicPay">
-              <MappingFragment StoreEntitySet="BasicPay">
-                <ScalarProperty Name="BasicPayId" ColumnName="BasicPayId" />
-                <ScalarProperty Name="BasicPayValue" ColumnName="BasicPayValue" />
-                <ScalarProperty Name="BasicPayDescription" ColumnName="BasicPayDescription" />
-                <ScalarProperty Name="UserPersonalInformationId" ColumnName="UserPersonalInformationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Deductions">
             <EntityTypeMapping TypeName="PayrollModel.Deduction">
               <MappingFragment StoreEntitySet="Deduction">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="DeductionId" ColumnName="DeductionId" />
                 <ScalarProperty Name="DeductionValue" ColumnName="DeductionValue" />
                 <ScalarProperty Name="DeductionName" ColumnName="DeductionName" />
@@ -176,6 +161,7 @@
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="PayrollModel.Department">
               <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
                 <ScalarProperty Name="DepartmentDescription" ColumnName="DepartmentDescription" />
@@ -185,6 +171,7 @@
           <EntitySetMapping Name="Incomes">
             <EntityTypeMapping TypeName="PayrollModel.Income">
               <MappingFragment StoreEntitySet="Income">
+                <ScalarProperty Name="Active" ColumnName="Active" />
                 <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
                 <ScalarProperty Name="IncomeValue" ColumnName="IncomeValue" />
                 <ScalarProperty Name="IncomeName" ColumnName="IncomeName" />
@@ -195,6 +182,10 @@
           <EntitySetMapping Name="UserPersonalInformations">
             <EntityTypeMapping TypeName="PayrollModel.UserPersonalInformation">
               <MappingFragment StoreEntitySet="UserPersonalInformation">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="BasicPay" ColumnName="BasicPay" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="UserPersonalInformationId" ColumnName="UserPersonalInformationId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />

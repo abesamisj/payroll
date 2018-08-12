@@ -1,0 +1,79 @@
+﻿@model Payroll.Models.EmployeeListModel
+
+@{
+    ViewBag.Title = "ViewEmployee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Employee</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+            @Html.DisplayNameFor(model => model.UserPersonalInformationID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserPersonalInformationID)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Position)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Position)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BasicPay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BasicPay)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "EditEmployee", new { id = Model.UserPersonalInformationID }) |
+    @Html.ActionLink("Back to List", "Employees")
+</p>

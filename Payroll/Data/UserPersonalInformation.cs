@@ -18,5 +18,9 @@ namespace Payroll.Data
         public string EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Address { get; set; }
+        public Nullable<int> Active { get; set; }
+        public Nullable<decimal> BasicPay { get; set; }
+        public string Position { get; set; }
     }
 }
