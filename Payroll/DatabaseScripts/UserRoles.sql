@@ -1,0 +1,21 @@
+USE [Payroll]
+GO
+
+/****** Object:  Table [dbo].[UserRoles]    Script Date: 13/08/2018 10:51:51 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[UserRoles](
+	[UserRoleId] [int] IDENTITY(1,1) NOT NULL,
+	[UserDescription] [varchar](50) NULL,
+ CONSTRAINT [PK_UserRoles] PRIMARY KEY CLUSTERED 
+(
+	[UserRoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+

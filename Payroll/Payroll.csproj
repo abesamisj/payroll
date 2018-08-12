@@ -264,6 +264,12 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="DatabaseScripts\Deduction.sql" />
+    <Content Include="DatabaseScripts\Department.sql" />
+    <Content Include="DatabaseScripts\Income.sql" />
+    <Content Include="DatabaseScripts\UserPersonalInformation.sql" />
+    <Content Include="DatabaseScripts\UserRoles.sql" />
+    <Content Include="DatabaseScripts\Users.sql" />
     <Content Include="Data\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
