@@ -37,7 +37,8 @@ namespace Payroll.Models
         [Display(Name = "Basic Pay")]
         [RegularExpression(@"^\d+.\d{0,2}$", ErrorMessage = "Amount can't have more than 2 decimal places")]
         public decimal? BasicPay { get; set; }
-
+  
+        [Display(Name = "Status")]
         public bool Active { get; set; }
     }
 }

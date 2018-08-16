@@ -31,5 +31,7 @@ namespace Payroll.Data
         public virtual DbSet<UserPersonalInformation> UserPersonalInformations { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
+        public virtual DbSet<PayrollPeriod> PayrollPeriods { get; set; }
     }
 }

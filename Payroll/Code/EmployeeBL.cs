@@ -8,7 +8,7 @@ namespace Payroll.Code
 {
     public class EmployeeBL
     {
-        PayrollEntities context = new PayrollEntities();
+
         public List<UserPersonalInformation> GetActiveEmployees()
         {
             using (var db = new PayrollEntities())
@@ -67,8 +67,11 @@ namespace Payroll.Code
 
         public void InsertEmployee(UserPersonalInformation toDB)
         {
-            context.UserPersonalInformations.Add(toDB);
-            context.SaveChanges();
+            using (var db = new PayrollEntities())
+            {
+                db.UserPersonalInformations.Add(toDB);
+                db.SaveChanges();
+            }
         }
 
         public void UpdateEmployee(UserPersonalInformation userPersonalInformation)

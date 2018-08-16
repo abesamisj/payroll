@@ -8,8 +8,7 @@ namespace Payroll.Code
 {
     public class DepartmentBL
     {
-        PayrollEntities context = new PayrollEntities();
-
+       
         public List<Department> GetActiveDepartments()
         {
             using (var db = new PayrollEntities())
@@ -49,8 +48,11 @@ namespace Payroll.Code
 
         public void InsertDepartment(Department department)
         {
-            context.Departments.Add(department);
-            context.SaveChanges();
+            using (var db = new PayrollEntities())
+            {
+                db.Departments.Add(department);
+                db.SaveChanges();
+            }
         }
 
         public void UpdateDepartment(Department department)

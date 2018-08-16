@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Payroll.Models.PayrollPeriodViewModels>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PayrollPeriodId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayrollPeriodDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Month)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayPeriodFrom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PayPeriodTo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkDays)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkHours)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayrollPeriodId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayrollPeriodDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Month)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayPeriodFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PayPeriodTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkDays)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkHours)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PayrollPeriodId */ })
+            </td>
+        </tr>
+    }
+
+</table>*@
+<div class="code-cut">
+    @Html.Grid(Model).Columns(columns =>
+                    {
+                        columns.Add(c => c.PayrollPeriodId).Titled("Payroll Period Id").Filterable(true);
+                        columns.Add(c => c.PayrollPeriodDescription).Titled("Payroll Period Description").Filterable(true);
+                        columns.Add(c => c.Year).Titled("Year").Filterable(true);
+                        columns.Add(c => c.Month).Titled("Month").Filterable(true);
+                        columns.Add(c => c.PayPeriodFrom).Format("{0:dd/MM/yyyy}").Titled("Pay Period From");
+                        columns.Add(c => c.PayPeriodTo).Format("{0:dd/MM/yyyy}").Titled("Pay Period To");
+                        columns.Add(c => c.WorkDays).Titled("Work Days");
+                        columns.Add(c => c.WorkHours).Titled("Work Hours");
+                        columns.Add()
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .SetWidth(30)
+                        .RenderValueAs(o => Html.ActionLink("Edit", "Edit", new { id = o.PayrollPeriodId }));
+
+                    }).WithPaging(20).Sortable(true)
+</div>

@@ -8,7 +8,6 @@ namespace Payroll.Code
 {
     public class IncomeBL
     {
-        PayrollEntities context = new PayrollEntities();
 
         public List<Income> GetActiveIncomes()
         {
@@ -49,8 +48,11 @@ namespace Payroll.Code
 
         public void InsertIncome(Income income)
         {
-            context.Incomes.Add(income);
-            context.SaveChanges();
+            using (var db = new PayrollEntities())
+            {
+                db.Incomes.Add(income);
+                db.SaveChanges();
+            }
         }
 
         public void UpdateIncome(Income income)

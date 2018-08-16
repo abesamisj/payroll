@@ -6,8 +6,6 @@ namespace Payroll.Code
 {
     public class DeductionBL
     {
-        PayrollEntities context = new PayrollEntities();
-
         public List<Deduction> GetActiveDeductions()
         {
             using (var db = new PayrollEntities())
@@ -47,10 +45,12 @@ namespace Payroll.Code
 
         public void InsertDeduction(Deduction deduction)
         {
-            context.Deductions.Add(deduction);
-            context.SaveChanges();
+            using (var db = new PayrollEntities())
+            {
+                db.Deductions.Add(deduction);
+                db.SaveChanges();
+            }
         }
-
         public void UpdateDeduction(Deduction deduction)
         {
             using (var db = new PayrollEntities())
