@@ -79,18 +79,37 @@
 <div class="code-cut">
     @Html.Grid(Model).Columns(columns =>
 {
-    columns.Add(c => c.EmployeeId).Titled("Employee ID").Filterable(true);
+    columns.Add(c => c.EmployeeId).Filterable(true)
+    .Titled("Employee Id")
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30).Filterable(true)
+    .RenderValueAs(o => Html.ActionLink(o.EmployeeId, "EditEmployee", new { id = o.UserPersonalInformationID }));
+
     columns.Add(c => c.FirstName).Titled("First Name").Filterable(true);
     columns.Add(c => c.LastName).Titled("Last Name").Filterable(true);
     columns.Add(c => c.Address).Titled("Address");
     columns.Add(c => c.Position).Titled("Position").Filterable(true);
     columns.Add(c => c.BasicPay).Titled("Basic Pay");
+
     columns.Add(c => c.Active).Titled("Status");
     columns.Add()
     .Encoded(false)
     .Sanitized(false)
     .SetWidth(30)
-    .RenderValueAs(o => Html.ActionLink("Edit", "EditEmployee", new { id = o.UserPersonalInformationID }));
+    .RenderValueAs(o => Html.ActionLink("Department", "AssignDepartment", new { id = o.UserPersonalInformationID }));
 
+    columns.Add()
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(o => Html.ActionLink("Income", "AssignIncome", new { id = o.UserPersonalInformationID }));
+
+    columns.Add()
+
+    .Encoded(false)
+    .Sanitized(false)
+    .SetWidth(30)
+    .RenderValueAs(o => Html.ActionLink("Deduction", "AssignDeduction", new { id = o.UserPersonalInformationID }));
 }).WithPaging(20).Sortable(true)
 </div> 

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Payroll.Models.AssignedEmployeeDeductionsViewModel>
+
+@{
+    ViewBag.Title = "AssignDeductions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Assign Deduction for : @ViewBag.Name</h2>
+
+
+<p>
+    @Html.ActionLink("Add Deductions", "AddDeduction", new { id = ViewBag.Id })
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.UserPersonalInformationId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AssignedEmployeeDeductionsId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeductionId)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.DeductionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DeductionAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomIncomeAmount)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.UserPersonalInformationId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssignedEmployeeDeductionsId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeductionId)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.DeductionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeductionAmount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomIncomeAmount)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "EditDeduction", new { id = item.UserPersonalInformationId, deductionId = item.DeductionId }) |
+            @Html.ActionLink("Delete", "DeleteDeduction", new { id = item.UserPersonalInformationId, deductionId = item.DeductionId })
+        </td>
+    </tr>
+}
+
+</table>
+<div>
+    @Html.ActionLink("Back to List", "Employees")
+</div>

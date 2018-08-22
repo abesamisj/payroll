@@ -1,0 +1,44 @@
+﻿@model Payroll.Models.AssignDepartmentViewModel
+
+@{
+    ViewBag.Title = "AssignDepartment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Assign Department</h2>
+
+@using (Html.BeginForm("AssignDepartment", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.EditorFor(model => model.UserPersonalInformationId)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Departments, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(n => n.DepartmentId, Model.Departments, "Please select a department", new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.SelectedDepartment, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <span class"form-control">@Html.DisplayFor(model => model.SelectedDepartment)</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Assign" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Employees")
+</div>
+
+

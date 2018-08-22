@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Payroll.Models.AssignedEmployeeIncomesViewModel>
+
+@{
+    ViewBag.Title = "AssignIncome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Assign Income for : @ViewBag.Name</h2>
+
+<p>
+    @Html.ActionLink("Add Income", "AddIncome", new { id = ViewBag.Id })
+</p>
+<table class="table">
+    <tr>
+        @*<th>
+                @Html.DisplayNameFor(model => model.UserPersonalInformationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssignedEmployeeIncomeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IncomeId)
+            </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.IncomeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IncomeAmount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomIncomeAmount)
+        </th>
+
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UserPersonalInformationId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AssignedEmployeeIncomeId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IncomeId)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.IncomeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IncomeAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomIncomeAmount)
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Edit", "EditIncome", new { id = item.UserPersonalInformationId, incomeId = item.IncomeId }) |
+                @Html.ActionLink("Delete", "DeleteIncome", new { id = item.UserPersonalInformationId, incomeId = item.IncomeId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div>
+    @Html.ActionLink("Back to List", "Employees")
+</div>

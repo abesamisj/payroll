@@ -106,6 +106,7 @@ namespace Payroll.Controllers
             return View(model);
         }
 
+
         // POST: PayrollPeriod/Edit/5
         [Authorize(Roles = "Admin")]
         [HttpPost]
@@ -162,6 +163,12 @@ namespace Payroll.Controllers
             {
                 return View();
             }
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Payroll(int id)
+        {
+            return RedirectToAction("Index", "PayrollTransaction", new { ID = id });
         }
     }
 }

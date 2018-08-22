@@ -44,6 +44,28 @@ namespace Payroll.Code
                 return query.FirstOrDefault();
             }
         }
+
+        public string GetEmployeeById(int id)
+        {
+            string name = "";
+            using (var db = new PayrollEntities())
+            {
+                var query = from b in db.UserPersonalInformations
+                            where b.UserPersonalInformationId == id
+                            select b;
+
+                if (query != null)
+                {
+                    foreach (var item in query)
+                    {
+                        return item.FirstName + " " + item.LastName;
+                    }
+                }
+
+                return name;
+            }
+        }
+
         public bool CheckIfEmployeeIdExists(string employeeId)
         {
             using (var db = new PayrollEntities())
@@ -61,8 +83,6 @@ namespace Payroll.Code
                     return false;
                 }
             }
-
-            
         }
 
         public void InsertEmployee(UserPersonalInformation toDB)
@@ -89,6 +109,19 @@ namespace Payroll.Code
                     result.LastName = userPersonalInformation.LastName;
                     result.Position = userPersonalInformation.Position;
                     result.BasicPay = userPersonalInformation.BasicPay;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateEmployeeDepartment(int? userPersonalInformationID, int departmentID)
+        {
+            using (var db = new PayrollEntities())
+            {
+                var result = db.UserPersonalInformations.SingleOrDefault(b => b.UserPersonalInformationId == userPersonalInformationID);
+                if (result != null)
+                {
+                    result.DepartmentId = departmentID;
                     db.SaveChanges();
                 }
             }

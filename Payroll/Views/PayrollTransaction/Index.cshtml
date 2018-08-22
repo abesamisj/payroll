@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Payroll.Models.PayrollTransactionViewModels>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Payroll Transactions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+div class="code-cut">
+@Html.Grid(Model).Columns(columns =>
+                {
+                    columns.Add(c => c.PayrollPeriodId).Titled("Payroll Period Id").Filterable(true);
+                    columns.Add(c => c.PayrollPeriodFrom).Titled("Payroll Period From").Format("{0:dd/MM/yyyy}").Filterable(true);
+                    columns.Add(c => c.Year).Titled("Year").Filterable(true);
+                    columns.Add(c => c.Month).Titled("Month").Filterable(true);
+                    columns.Add(c => c.PayPeriodFrom).Format("{0:dd/MM/yyyy}").Titled("Pay Period From");
+                    columns.Add(c => c.PayPeriodTo).Format("{0:dd/MM/yyyy}").Titled("Pay Period To");
+                    columns.Add(c => c.WorkDays).Titled("Work Days");
+                    columns.Add(c => c.WorkHours).Titled("Work Hours");
+                    columns.Add()
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .SetWidth(30)
+                    .RenderValueAs(o => Html.ActionLink("Edit", "Edit", new { id = o.PayrollPeriodId }));
+
+                }).WithPaging(20).Sortable(true)
+</div>

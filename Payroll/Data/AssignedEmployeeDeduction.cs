@@ -12,18 +12,12 @@ namespace Payroll.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class UserPersonalInformation
+    public partial class AssignedEmployeeDeduction
     {
-        public int UserPersonalInformationId { get; set; }
-        public string EmployeeId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Address { get; set; }
-        public string Position { get; set; }
-        public Nullable<decimal> BasicPay { get; set; }
-        public int Active { get; set; }
-        public int DepartmentId { get; set; }
+        public int AssignedEmployeeDeductionID { get; set; }
         public int DeductionId { get; set; }
-        public Nullable<decimal> CustomDeductionAmount { get; set; }
+        public Nullable<decimal> DeductionAmount { get; set; }
+        public Nullable<decimal> CustomAmount { get; set; }
+        public int UserPersonalInformationID { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace Payroll.Code
             using (var db = new PayrollEntities())
             {
                 var query = from b in db.PayrollPeriods
-                            orderby b.Month, b.PayrollPeriodId, b.PayPeriodFrom descending
+                            orderby b.PayPeriodFrom, b.Month, b.PayrollPeriodId descending
                             select b;
 
                 return query.ToList();
@@ -24,7 +24,7 @@ namespace Payroll.Code
             {
                 var query = from b in db.PayrollPeriods
                             where b.PayrollPeriodId == id
-                            orderby b.Month, b.PayrollPeriodId, b.PayPeriodFrom descending
+                            orderby b.PayPeriodFrom, b.Month, b.PayrollPeriodId descending
                             select b;
 
                 return query.FirstOrDefault();

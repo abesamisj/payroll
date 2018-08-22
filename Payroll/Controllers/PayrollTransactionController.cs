@@ -1,35 +1,41 @@
-﻿using Payroll.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Payroll.Code;
+using Payroll.Data;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
 {
-    public class PayrollController : Controller
+    public class PayrollTransactionController : Controller
     {
-        // GET: Payroll
+        PayrollTransactionBL payrollTransactionBL = new PayrollTransactionBL();
+        // GET: PayrollTransaction
         [Authorize(Roles = "Admin")]
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            List<PayrollViewModels> list = new List<PayrollViewModels>();
-            return View(list);
+            PayrollTransaction payrollTransaction = new PayrollTransaction();
+            //payrollTransaction = payrollTransactionBL.GetPayrollTransactionsByPayrollPeriodId(id);
+            if (payrollTransaction != null)
+            {
+
+            }
+
+            return View();
         }
 
-        // GET: Payroll/Details/5
+
+
+        // GET: PayrollTransaction/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Payroll/Create
+        // GET: PayrollTransaction/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Payroll/Create
+        // POST: PayrollTransaction/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
@@ -45,13 +51,13 @@ namespace Payroll.Controllers
             }
         }
 
-        // GET: Payroll/Edit/5
+        // GET: PayrollTransaction/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Payroll/Edit/5
+        // POST: PayrollTransaction/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
@@ -67,13 +73,13 @@ namespace Payroll.Controllers
             }
         }
 
-        // GET: Payroll/Delete/5
+        // GET: PayrollTransaction/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Payroll/Delete/5
+        // POST: PayrollTransaction/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

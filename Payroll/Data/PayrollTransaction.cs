@@ -22,5 +22,7 @@ namespace Payroll.Data
         public Nullable<decimal> CustomIncomeAmount { get; set; }
         public Nullable<int> DeductionId { get; set; }
         public Nullable<decimal> CustomDeductionAmount { get; set; }
+        public Nullable<decimal> TotalDeductionAmount { get; set; }
+        public Nullable<decimal> TotalIncomeAmount { get; set; }
     }
 }

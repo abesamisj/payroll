@@ -10,59 +10,6 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@*<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.IncomeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IncomeValue)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IncomeName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IncomeDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Active)
-        </th>
-        @*<th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr onclick="location.href = '@(Url.Action("Edit", "Income", new { id = item.IncomeId }, null))'">
-            <td>
-                @Html.DisplayFor(modelItem => item.IncomeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncomeValue)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncomeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IncomeDescription)
-            </td>
-            <td>
-                @if (item.Active)
-                {
-                    <p>Active</p>
-                }
-                else
-                {
-                    <p>In Active</p>
-                }
-            </td>
-            @*<td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.IncomeId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.IncomeId })
-                </td>
-        </tr>
-    }
-
-</table>*@
 <div class="code-cut">
     @Html.Grid(Model).Columns(columns =>
                     {
@@ -71,6 +18,7 @@
                         columns.Add(c => c.IncomeValue).Titled("Income Value").Filterable(true);
                         columns.Add(c => c.IncomeDescription).Titled("Income Description");
                         columns.Add(c => c.Active).Titled("Status");
+
                         columns.Add()
                         .Encoded(false)
                         .Sanitized(false)

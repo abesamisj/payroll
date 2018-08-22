@@ -22,6 +22,24 @@ namespace Payroll.Code
             }
         }
 
+        public List<int> GetActiveIncomeIds()
+        {
+            var list = new List<int>();
+            using (var db = new PayrollEntities())
+            {
+                var query = from b in db.Incomes
+                            where b.Active == 1
+                            orderby b.Active descending
+                            select b;
+
+                foreach (var item in query)
+                {
+                    list.Add(item.IncomeId);
+                }
+                return list;
+            }
+        }
+
         public List<Income> GetAllIncomes()
         {
             using (var db = new PayrollEntities())

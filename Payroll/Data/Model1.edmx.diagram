@@ -5,14 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="0a966ad10bbe460ca3353263e92ec705" Name="Diagram1">
-        <EntityTypeShape EntityType="PayrollModel.Deduction" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PayrollModel.Department" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PayrollModel.Income" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PayrollModel.UserPersonalInformation" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PayrollModel.UserRole" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PayrollModel.User" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PayrollModel.PayrollTransaction" Width="1.5" PointX="0.625" PointY="0.5" />
-        <EntityTypeShape EntityType="PayrollModel.PayrollPeriod" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="PayrollModel.Deduction" Width="1.5" PointX="0.5" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PayrollModel.Department" Width="1.5" PointX="5.875" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PayrollModel.Income" Width="1.5" PointX="0.5" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PayrollModel.UserRole" Width="1.5" PointX="4.125" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PayrollModel.User" Width="1.5" PointX="2.375" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PayrollModel.PayrollPeriod" Width="1.5" PointX="4.25" PointY="2.75" />
+        <EntityTypeShape EntityType="PayrollModel.PayrollTransaction" Width="1.5" PointX="6" PointY="2.75" />
+        <EntityTypeShape EntityType="PayrollModel.AssignedEmployeeIncome" Width="1.5" PointX="0.5" PointY="6.25" />
+        <EntityTypeShape EntityType="PayrollModel.UserPersonalInformation" Width="1.5" PointX="2.375" PointY="2.75" />
+        <EntityTypeShape EntityType="PayrollModel.AssignedEmployeeDeduction" Width="1.5" PointX="3.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
