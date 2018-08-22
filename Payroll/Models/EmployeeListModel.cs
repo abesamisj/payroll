@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace Payroll.Models
@@ -37,11 +33,14 @@ namespace Payroll.Models
 
         [Required]
         [Display(Name = "Basic Pay")]
-        [RegularExpression(@"^\d+.\d{0,2}$", ErrorMessage = "Amount can't have more than 2 decimal places")]
+        [RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid Amount")]
         public decimal? BasicPay { get; set; }
 
         [Display(Name = "Status")]
         public bool Active { get; set; }
+
+        [Display(Name = "Department")]
+        public string Department { get; set; }
 
     }
 
@@ -70,9 +69,6 @@ namespace Payroll.Models
         public string SelectedIncomeName { get; set; }
         [Display(Name = "Default Amount")]
         public decimal? SelectedIncomeAmount { get; set; }
-        [Display(Name = "Custom Amount")]
-        [RegularExpression(@"^\d+.\d{0,2}$", ErrorMessage = "Amount can't have more than 2 decimal places")]
-        public decimal SelectedCustomAmount { get; set; }
 
     }
 
@@ -87,12 +83,14 @@ namespace Payroll.Models
     {
         [HiddenInput(DisplayValue = false)]
         public int UserPersonalInformationId { get; set; }
+
         public string Name { get; set; }
 
         public int AssignedEmployeeIncomeId { get; set; }
         public int IncomeId { get; set; }
+        [Display(Name = "Income Amount")]
         public decimal? IncomeAmount { get; set; }
-        public decimal? CustomIncomeAmount { get; set; }
+        [Display(Name = "Income Name")]
         public string IncomeName { get; set; }
     }
 
@@ -105,7 +103,6 @@ namespace Payroll.Models
         public int AssignedEmployeeDeductionsId { get; set; }
         public int DeductionId { get; set; }
         public decimal? DeductionAmount { get; set; }
-        public decimal? CustomIncomeAmount { get; set; }
         public string DeductionName { get; set; }
     }
 
@@ -122,9 +119,7 @@ namespace Payroll.Models
         public string SelectedDeductionName { get; set; }
         [Display(Name = "Default Amount")]
         public decimal? SelectedDeductionAmount { get; set; }
-        [Display(Name = "Custom Amount")]
-        [RegularExpression(@"^\d+.\d{0,2}$", ErrorMessage = "Amount can't have more than 2 decimal places")]
-        public decimal? SelectedCustomAmount { get; set; }
+
 
     }
 }

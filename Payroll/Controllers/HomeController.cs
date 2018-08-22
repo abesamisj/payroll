@@ -3,7 +3,6 @@ using Payroll.Data;
 using Payroll.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -66,7 +65,7 @@ namespace Payroll.Controllers
         {
             List<EmployeeListModel> employeeListModels = new List<EmployeeListModel>();
             EmployeeListModel employee = new EmployeeListModel();
-
+            DepartmentBL department = new DepartmentBL();
             List<UserPersonalInformation> listFromDB = employeeBL.GetAllEmployees();
 
             foreach (UserPersonalInformation item in listFromDB)
@@ -80,6 +79,10 @@ namespace Payroll.Controllers
                 employee.UserPersonalInformationID = item.UserPersonalInformationId;
                 employee.Position = item.Position;
                 employee.BasicPay = item.BasicPay;
+                if (item.DepartmentId > 0)
+                {
+                    employee.Department = department.GetDepartmentById(item.DepartmentId).DepartmentName;
+                }
                 employeeListModels.Add(employee);
             }
 
@@ -94,7 +97,7 @@ namespace Payroll.Controllers
             { 
                 
                 UserPersonalInformation fromDB = employeeBL.GetEmployeesById(id);
-
+                DepartmentBL department = new DepartmentBL();
                 bool active = false;
 
                 if (fromDB.Active > 0)
@@ -113,6 +116,10 @@ namespace Payroll.Controllers
                     viewModel.Position = fromDB.Position;
                     viewModel.BasicPay = fromDB.BasicPay;
                     viewModel.UserPersonalInformationID = fromDB.UserPersonalInformationId;
+                    if (fromDB.DepartmentId > 0)
+                    {
+                        viewModel.Department = department.GetDepartmentById(fromDB.DepartmentId).DepartmentName;
+                    }
                 }
             }
             else
@@ -128,7 +135,7 @@ namespace Payroll.Controllers
         {
             EmployeeListModel viewModel = new EmployeeListModel();
             UserPersonalInformation fromDB = employeeBL.GetEmployeesById(id);
-
+            DepartmentBL department = new DepartmentBL();
             bool active = false;
 
             if (fromDB.Active > 0)
@@ -147,6 +154,10 @@ namespace Payroll.Controllers
                 viewModel.Position = fromDB.Position;
                 viewModel.BasicPay = fromDB.BasicPay;
                 viewModel.UserPersonalInformationID = fromDB.UserPersonalInformationId;
+                if (fromDB.DepartmentId > 0)
+                {
+                    viewModel.Department = department.GetDepartmentById(fromDB.DepartmentId).DepartmentName;
+                }
             }
             return View(viewModel);
         }
@@ -230,16 +241,14 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-
-                   
-                    ModelState.AddModelError("", "Please Select a department.");
+                    ModelState.AddModelError("", "Error");
                     return View(assignDepartmentViewModel);
                 }
                 
             }
             else
             {
-                ModelState.AddModelError("", "Please Select a department.");
+                ModelState.AddModelError("", "Error.");
                 return View(assignDepartmentViewModel);
             }
             return RedirectToAction("Employees", "Home");
@@ -269,7 +278,7 @@ namespace Payroll.Controllers
                     assignEmployeeIncomeViewModel = new AssignedEmployeeIncomesViewModel();
                     assignEmployeeIncomeViewModel.Name = name;
                     assignEmployeeIncomeViewModel.AssignedEmployeeIncomeId = item.AssignedEmployeeIncomeID;
-                    assignEmployeeIncomeViewModel.CustomIncomeAmount = item.CustomAmount;
+                    //assignEmployeeIncomeViewModel.CustomIncomeAmount = item.CustomAmount;
                     assignEmployeeIncomeViewModel.IncomeAmount = item.IncomeAmount;
                     assignEmployeeIncomeViewModel.IncomeId = item.IncomeId;
                     income = incomeBL.GetIncomesById(item.IncomeId);
@@ -314,7 +323,7 @@ namespace Payroll.Controllers
             toModel.UserPersonalInformationId = fromModel.UserPersonalInformationId;
             toModel.IncomeId = fromModel.IncomeId;
             toModel.Name = fromModel.Name;
-            toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
+            //toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
 
             income = bL.GetIncomesById(fromModel.IncomeId);
             if (income != null)
@@ -341,13 +350,13 @@ namespace Payroll.Controllers
 
                     if (assingedEmployeeIncomeBL.IsIncomeAssignedToEmployee(fromModel.UserPersonalInformationId, fromModel.IncomeId))
                     {
-                        ModelState.AddModelError("", "Please Select another income.");
+                        ModelState.AddModelError("", "Please select another income.");
                         return View(toModel);
                     }
                     else
                     {
                         toDB.UserPersonalInformationID = toModel.UserPersonalInformationId;
-                        toDB.CustomAmount = toModel.SelectedCustomAmount;
+                        //toDB.CustomAmount = toModel.SelectedCustomAmount;
                         toDB.IncomeAmount = toModel.SelectedIncomeAmount;
                         toDB.IncomeId = toModel.IncomeId;
 
@@ -358,14 +367,14 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please Select an income.");
+                    ModelState.AddModelError("", "Please select another income.");
                     return View(toModel);
                 }
 
             }
             else
             {
-                ModelState.AddModelError("", "Please Select an income.");
+                ModelState.AddModelError("", "Please select an income.");
                 return View(toModel);
             }
             return RedirectToAction("AssignIncome", "Home", new { id = fromModel.UserPersonalInformationId });
@@ -382,7 +391,7 @@ namespace Payroll.Controllers
             EmployeeBL employeeBL = new EmployeeBL();
             viewModels.UserPersonalInformationId = id;
             income = bL.GetIncomesById(incomeId);
-            viewModels.SelectedCustomAmount = assingedEmployeeIncomeBL.GetAssignedEmployeeIncomesByIncomeId(id, incomeId);
+            //viewModels.SelectedCustomAmount = assingedEmployeeIncomeBL.GetAssignedEmployeeIncomesByIncomeId(id, incomeId);
             if (income != null)
             {
                 viewModels.SelectedIncomeAmount = income.IncomeValue;
@@ -409,7 +418,7 @@ namespace Payroll.Controllers
             toModel.UserPersonalInformationId = fromModel.UserPersonalInformationId;
             toModel.IncomeId = fromModel.IncomeId;
             toModel.Name = fromModel.Name;
-            toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
+            //toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
 
             income = bL.GetIncomesById(fromModel.IncomeId);
             if (income != null)
@@ -435,7 +444,7 @@ namespace Payroll.Controllers
                 {
 
                     toDB.UserPersonalInformationID = toModel.UserPersonalInformationId;
-                    toDB.CustomAmount = toModel.SelectedCustomAmount;
+                    //toDB.CustomAmount = toModel.SelectedCustomAmount;
                     toDB.IncomeAmount = toModel.SelectedIncomeAmount;
                     toDB.IncomeId = toModel.IncomeId;
 
@@ -445,14 +454,14 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please Select an income.");
+                    ModelState.AddModelError("", "Please select an income.");
                     return View(toModel);
                 }
 
             }
             else
             {
-                ModelState.AddModelError("", "Please Select an income.");
+                ModelState.AddModelError("", "Error.");
                 return View(toModel);
             }
             return RedirectToAction("AssignIncome", "Home", new { id = fromModel.UserPersonalInformationId });
@@ -492,7 +501,7 @@ namespace Payroll.Controllers
                     assignEmployeeDeductionViewModel = new AssignedEmployeeDeductionsViewModel();
                     assignEmployeeDeductionViewModel.Name = name;
                     assignEmployeeDeductionViewModel.AssignedEmployeeDeductionsId = item.AssignedEmployeeDeductionID;
-                    assignEmployeeDeductionViewModel.CustomIncomeAmount = item.CustomAmount;
+                    //assignEmployeeDeductionViewModel.CustomIncomeAmount = item.CustomAmount;
                     assignEmployeeDeductionViewModel.DeductionAmount = item.DeductionAmount;
                     assignEmployeeDeductionViewModel.DeductionId = item.DeductionId;
                     deduction = deductionBL.GetDeductionById(item.DeductionId);
@@ -537,7 +546,7 @@ namespace Payroll.Controllers
             toModel.UserPersonalInformationId = fromModel.UserPersonalInformationId;
             toModel.DeductionId = fromModel.DeductionId;
             toModel.Name = fromModel.Name;
-            toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
+            //toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
 
             deduction = bL.GetDeductionById(fromModel.DeductionId);
             if (deduction != null)
@@ -547,7 +556,7 @@ namespace Payroll.Controllers
             }
             else
             {
-                toModel.SelectedCustomAmount = fromModel.SelectedDeductionAmount;
+                //toModel.SelectedCustomAmount = fromModel.SelectedDeductionAmount;
                 toModel.SelectedDeductionName = fromModel.SelectedDeductionName;
             }
 
@@ -564,13 +573,13 @@ namespace Payroll.Controllers
 
                     if (assingedEmployeeBL.IsDeductionAssignedToEmployee(fromModel.UserPersonalInformationId, fromModel.DeductionId))
                     {
-                        ModelState.AddModelError("", "Please Select another deduction.");
+                        ModelState.AddModelError("", "Please select a different deduction.");
                         return View(toModel);
                     }
                     else
                     {
                         toDB.UserPersonalInformationID = toModel.UserPersonalInformationId;
-                        toDB.CustomAmount = toModel.SelectedCustomAmount;
+                        //toDB.CustomAmount = toModel.SelectedCustomAmount;
                         toDB.DeductionAmount = toModel.SelectedDeductionAmount;
                         toDB.DeductionId = toModel.DeductionId;
 
@@ -581,14 +590,14 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please Select an deduction.");
+                    ModelState.AddModelError("", "Please select a deduction.");
                     return View(toModel);
                 }
 
             }
             else
             {
-                ModelState.AddModelError("", "Please Select an deduction.");
+                ModelState.AddModelError("", "Error.");
                 return View(toModel);
             }
             return RedirectToAction("AssignDeduction", "Home", new { id = fromModel.UserPersonalInformationId });
@@ -605,7 +614,7 @@ namespace Payroll.Controllers
             EmployeeBL employeeBL = new EmployeeBL();
             viewModels.UserPersonalInformationId = id;
             deduction = bL.GetDeductionById(deductionId);
-            viewModels.SelectedCustomAmount = assingedEmployeeBL.GetAssignedEmployeeDeductionsByDeductionId(id, deductionId);
+            //viewModels.SelectedCustomAmount = assingedEmployeeBL.GetAssignedEmployeeDeductionsByDeductionId(id, deductionId);
             if (deduction != null)
             {
                 viewModels.SelectedDeductionAmount = deduction.DeductionValue;
@@ -632,7 +641,7 @@ namespace Payroll.Controllers
             toModel.UserPersonalInformationId = fromModel.UserPersonalInformationId;
             toModel.DeductionId = fromModel.DeductionId;
             toModel.Name = fromModel.Name;
-            toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
+            //toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
 
             deduction = bL.GetDeductionById(fromModel.DeductionId);
             if (deduction != null)
@@ -658,7 +667,7 @@ namespace Payroll.Controllers
                 {
 
                     toDB.UserPersonalInformationID = toModel.UserPersonalInformationId;
-                    toDB.CustomAmount = toModel.SelectedCustomAmount;
+                    //toDB.CustomAmount = toModel.SelectedCustomAmount;
                     toDB.DeductionAmount = toModel.SelectedDeductionAmount;
                     toDB.DeductionId = toModel.DeductionId;
 
@@ -668,14 +677,14 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Please Select an Deduction.");
+                    ModelState.AddModelError("", "Please select a Deduction.");
                     return View(toModel);
                 }
 
             }
             else
             {
-                ModelState.AddModelError("", "Please Select an Deduction.");
+                ModelState.AddModelError("", "Error.");
                 return View(toModel);
             }
             return RedirectToAction("AssignDeduction", "Home", new { id = fromModel.UserPersonalInformationId });

@@ -19,5 +19,6 @@ namespace Payroll.Data
         public string DeductionName { get; set; }
         public string DeductionDescription { get; set; }
         public Nullable<int> Active { get; set; }
+        public Nullable<int> Order { get; set; }
     }
 }

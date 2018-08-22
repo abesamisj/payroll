@@ -29,6 +29,7 @@ namespace Payroll.Controllers
                 model.IncomeId = item.IncomeId;
                 model.IncomeName = item.IncomeName;
                 model.IncomeValue = item.IncomeValue;
+                model.Order = item.Order;
                 listModels.Add(model);
             }
 
@@ -47,7 +48,7 @@ namespace Payroll.Controllers
             model.IncomeId = income.IncomeId;
             model.IncomeName = income.IncomeName;
             model.IncomeValue = income.IncomeValue;
-
+            model.Order = income.Order;
             return View(model);
         }
 
@@ -72,7 +73,7 @@ namespace Payroll.Controllers
                     toDB.IncomeDescription = collection.IncomeDescription;
                     toDB.IncomeName = collection.IncomeName;
                     toDB.IncomeValue = collection.IncomeValue;
-
+                    toDB.Order = collection.Order;
                     incomeBL.InsertIncome(toDB);
 
                     return RedirectToAction("Index");
@@ -112,6 +113,7 @@ namespace Payroll.Controllers
                 viewModel.IncomeId = fromDB.IncomeId;
                 viewModel.IncomeName = fromDB.IncomeName;
                 viewModel.IncomeValue = fromDB.IncomeValue;
+                viewModel.Order = fromDB.Order;
             }
             return View(viewModel);
         }
@@ -137,7 +139,7 @@ namespace Payroll.Controllers
                     toDB.IncomeName = viewModel.IncomeName;
                     toDB.IncomeValue = viewModel.IncomeValue;
                     toDB.IncomeId = viewModel.IncomeId;
-
+                    toDB.Order = viewModel.Order;
                     incomeBL.UpdateIncome(toDB);
 
                     return RedirectToAction("Index", "Income");

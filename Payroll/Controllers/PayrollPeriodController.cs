@@ -121,8 +121,8 @@ namespace Payroll.Controllers
                     toDB = new PayrollPeriod();
                     toDB.PayrollPeriodId = collection.PayrollPeriodId;
                     toDB.PayrollPeriodDescription = collection.PayrollPeriodDescription;
-                    toDB.Year = collection.Year;
-                    toDB.Month = collection.Month;
+                    toDB.Year = collection.PayPeriodFrom.Year;
+                    toDB.Month = Helper.GetMonthName(collection.PayPeriodFrom.Month);
                     toDB.PayPeriodFrom = collection.PayPeriodFrom;
                     toDB.PayPeriodTo = collection.PayPeriodTo;
                     toDB.WorkDays = collection.WorkDays;

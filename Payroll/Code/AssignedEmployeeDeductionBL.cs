@@ -33,25 +33,25 @@ namespace Payroll.Code
             }
         }
 
-        public decimal GetAssignedEmployeeDeductionsByDeductionId(int userPersonalInformationId, int deductionId)
-        {
-            decimal returnValue = 0.0M;
-            using (var db = new PayrollEntities())
-            {
-                var query = from a in db.AssignedEmployeeDeductions
-                            join b in db.Deductions on a.DeductionId equals b.DeductionId
-                            where (a.UserPersonalInformationID == userPersonalInformationId)
-                            && (a.DeductionId == deductionId)
-                            select a.CustomAmount;
+        //public decimal GetAssignedEmployeeDeductionsByDeductionId(int userPersonalInformationId, int deductionId)
+        //{
+        //    decimal returnValue = 0.0M;
+        //    using (var db = new PayrollEntities())
+        //    {
+        //        var query = from a in db.AssignedEmployeeDeductions
+        //                    join b in db.Deductions on a.DeductionId equals b.DeductionId
+        //                    where (a.UserPersonalInformationID == userPersonalInformationId)
+        //                    && (a.DeductionId == deductionId)
+        //                    select a.CustomAmount;
 
-                if (query.FirstOrDefault().HasValue)
-                {
-                    returnValue = Convert.ToDecimal(query.FirstOrDefault().Value);
-                };
+        //        if (query.FirstOrDefault().HasValue)
+        //        {
+        //            returnValue = Convert.ToDecimal(query.FirstOrDefault().Value);
+        //        };
 
-                return returnValue;
-            }
-        }
+        //        return returnValue;
+        //    }
+        //}
 
         public bool IsDeductionAssignedToEmployee(int userPersonalInformationId, int deductionId)
         {
@@ -104,7 +104,7 @@ namespace Payroll.Code
                 && b.DeductionId == toDB.DeductionId);
                 if (result != null)
                 {
-                    result.CustomAmount = toDB.CustomAmount;
+                    //result.CustomAmount = toDB.CustomAmount;
                     db.SaveChanges();
                 }
             }

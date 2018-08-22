@@ -28,31 +28,32 @@ namespace Payroll.Code
                 var query = from a in db.AssignedEmployeeIncomes
                             join b in db.Incomes on a.IncomeId equals b.IncomeId
                             where a.UserPersonalInformationID == userPersonalInformationId
+                            orderby b.Order ascending
                             select a;
 
                 return query.ToList();
             }
         }
 
-        public decimal GetAssignedEmployeeIncomesByIncomeId(int userPersonalInformationId, int incomeId)
-        {
-            decimal returnValue = 0.0M;
-            using (var db = new PayrollEntities())
-            {
-                var query = from a in db.AssignedEmployeeIncomes
-                            join b in db.Incomes on a.IncomeId equals b.IncomeId
-                            where (a.UserPersonalInformationID == userPersonalInformationId)
-                            && (a.IncomeId == incomeId)
-                            select a.CustomAmount;
+        //public decimal GetAssignedEmployeeIncomesByIncomeId(int userPersonalInformationId, int incomeId)
+        //{
+        //    decimal returnValue = 0.0M;
+        //    using (var db = new PayrollEntities())
+        //    {
+        //        var query = from a in db.AssignedEmployeeIncomes
+        //                    join b in db.Incomes on a.IncomeId equals b.IncomeId
+        //                    where (a.UserPersonalInformationID == userPersonalInformationId)
+        //                    && (a.IncomeId == incomeId)
+        //                    select a.CustomAmount;
 
-                if (query != null)
-                {
-                    returnValue = Convert.ToDecimal(query.FirstOrDefault().Value);
-                };
+        //        if (query != null)
+        //        {
+        //            returnValue = Convert.ToDecimal(query.FirstOrDefault().Value);
+        //        };
 
-                return returnValue;
-            }
-        }
+        //        return returnValue;
+        //    }
+        //}
 
         public void DeleteIncome(int userPersonalInformationId, int incomeId)
         {
@@ -107,7 +108,7 @@ namespace Payroll.Code
                 && b.IncomeId == toDB.IncomeId);
                 if (result != null)
                 {
-                    result.CustomAmount = toDB.CustomAmount;
+                    //result.CustomAmount = toDB.CustomAmount;
                     db.SaveChanges();
                 }
             }

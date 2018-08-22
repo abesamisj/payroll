@@ -17,7 +17,6 @@ namespace Payroll.Data
         public int AssignedEmployeeIncomeID { get; set; }
         public int IncomeId { get; set; }
         public Nullable<decimal> IncomeAmount { get; set; }
-        public Nullable<decimal> CustomAmount { get; set; }
         public int UserPersonalInformationID { get; set; }
     }
 }

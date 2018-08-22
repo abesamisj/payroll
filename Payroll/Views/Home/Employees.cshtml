@@ -10,72 +10,6 @@
 <p>
     @Html.ActionLink("Create New", "CreateEmployee")
 </p>
-@*<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.EmployeeId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Position)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BasicPay)
-        </th>
-        <th>
-            Status
-        </th>
-        @*<th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr onclick="location.href = '@(Url.Action("EditEmployee", "Home", new { id = item.UserPersonalInformationID }, null))'">
-            <td>
-                @Html.DisplayFor(modelItem => item.EmployeeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Position)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BasicPay)
-            </td>
-            <td>
-                @if (item.Active)
-                {
-                    <p>Active</p>
-                }
-                else
-                {
-                    <p>In Active</p>
-                }
-            </td>
-            @*<td>
-                    @Html.ActionLink("Edit", "EditEmployee", "Home", new { id = item.UserPersonalInformationID }, null) |
-                    @Html.ActionLink("Details", "ViewEmployee", new { id = item.UserPersonalInformationID }, null)
-
-                </td>
-        </tr>
-    }
-
-</table>*@
 <div class="code-cut">
     @Html.Grid(Model).Columns(columns =>
 {
@@ -91,7 +25,7 @@
     columns.Add(c => c.Address).Titled("Address");
     columns.Add(c => c.Position).Titled("Position").Filterable(true);
     columns.Add(c => c.BasicPay).Titled("Basic Pay");
-
+    columns.Add(c => c.Department).Titled("Department");
     columns.Add(c => c.Active).Titled("Status");
     columns.Add()
     .Encoded(false)

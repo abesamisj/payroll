@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Assign Income for : @ViewBag.Name</h2>
+<h2>Assigned incomes for : @ViewBag.Name</h2>
 
 <p>
     @Html.ActionLink("Add Income", "AddIncome", new { id = ViewBag.Id })
@@ -30,9 +30,9 @@
         <th>
             @Html.DisplayNameFor(model => model.IncomeAmount)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.CustomIncomeAmount)
-        </th>
+        </th>*@
 
 
         <th></th>
@@ -59,13 +59,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IncomeAmount)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.CustomIncomeAmount)
-            </td>
+            </td>*@
 
 
             <td>
-                @Html.ActionLink("Edit", "EditIncome", new { id = item.UserPersonalInformationId, incomeId = item.IncomeId }) |
                 @Html.ActionLink("Delete", "DeleteIncome", new { id = item.UserPersonalInformationId, incomeId = item.IncomeId })
             </td>
         </tr>

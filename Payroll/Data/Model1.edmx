@@ -12,7 +12,6 @@
           <Property Name="AssignedEmployeeDeductionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DeductionId" Type="int" Nullable="false" />
           <Property Name="DeductionAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="CustomAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="UserPersonalInformationID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AssignedEmployeeIncome">
@@ -22,7 +21,6 @@
           <Property Name="AssignedEmployeeIncomeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IncomeId" Type="int" Nullable="false" />
           <Property Name="IncomeAmount" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="CustomAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="UserPersonalInformationID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Deduction">
@@ -34,6 +32,7 @@
           <Property Name="DeductionName" Type="varchar" MaxLength="250" />
           <Property Name="DeductionDescription" Type="varchar" MaxLength="250" />
           <Property Name="Active" Type="int" />
+          <Property Name="Order" Type="int" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -53,6 +52,7 @@
           <Property Name="IncomeName" Type="varchar" MaxLength="250" />
           <Property Name="IncomeDescription" Type="varchar" MaxLength="250" />
           <Property Name="Active" Type="int" />
+          <Property Name="Order" Type="int" />
         </EntityType>
         <EntityType Name="PayrollPeriod">
           <Key>
@@ -130,16 +130,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Deduction">
-          <Key>
-            <PropertyRef Name="DeductionId" />
-          </Key>
-          <Property Name="DeductionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DeductionValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="DeductionName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="DeductionDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Int32" />
-        </EntityType>
         <EntityType Name="Department">
           <Key>
             <PropertyRef Name="DepartmentId" />
@@ -147,16 +137,6 @@
           <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DepartmentName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="DepartmentDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="Active" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Income">
-          <Key>
-            <PropertyRef Name="IncomeId" />
-          </Key>
-          <Property Name="IncomeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IncomeValue" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="IncomeName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="IncomeDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Int32" />
         </EntityType>
         <EntityType Name="UserRole">
@@ -176,15 +156,15 @@
           <Property Name="UserRoleId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="PayrollEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Deductions" EntityType="Self.Deduction" />
           <EntitySet Name="Departments" EntityType="Self.Department" />
-          <EntitySet Name="Incomes" EntityType="Self.Income" />
           <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="PayrollPeriods" EntityType="PayrollModel.PayrollPeriod" />
           <EntitySet Name="PayrollTransactions" EntityType="PayrollModel.PayrollTransaction" />
-          <EntitySet Name="AssignedEmployeeIncomes" EntityType="PayrollModel.AssignedEmployeeIncome" />
           <EntitySet Name="UserPersonalInformations" EntityType="PayrollModel.UserPersonalInformation" />
+          <EntitySet Name="Incomes" EntityType="PayrollModel.Income" />
+          <EntitySet Name="Deductions" EntityType="PayrollModel.Deduction" />
+          <EntitySet Name="AssignedEmployeeIncomes" EntityType="PayrollModel.AssignedEmployeeIncome" />
           <EntitySet Name="AssignedEmployeeDeductions" EntityType="PayrollModel.AssignedEmployeeDeduction" />
         </EntityContainer>
         <EntityType Name="PayrollPeriod">
@@ -215,16 +195,6 @@
           <Property Name="TotalDeductionAmount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="TotalIncomeAmount" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
-        <EntityType Name="AssignedEmployeeIncome">
-          <Key>
-            <PropertyRef Name="AssignedEmployeeIncomeID" />
-          </Key>
-          <Property Name="AssignedEmployeeIncomeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IncomeId" Type="Int32" Nullable="false" />
-          <Property Name="IncomeAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CustomAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="UserPersonalInformationID" Type="Int32" Nullable="false" />
-        </EntityType>
         <EntityType Name="UserPersonalInformation">
           <Key>
             <PropertyRef Name="UserPersonalInformationId" />
@@ -241,6 +211,37 @@
           <Property Name="DeductionId" Type="Int32" Nullable="false" />
           <Property Name="CustomDeductionAmount" Type="Decimal" Precision="18" Scale="2" />
         </EntityType>
+        <EntityType Name="Income">
+          <Key>
+            <PropertyRef Name="IncomeId" />
+          </Key>
+          <Property Name="IncomeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncomeValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IncomeName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IncomeDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Deduction">
+          <Key>
+            <PropertyRef Name="DeductionId" />
+          </Key>
+          <Property Name="DeductionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeductionValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DeductionName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DeductionDescription" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="Int32" />
+          <Property Name="Order" Type="Int32" />
+        </EntityType>
+        <EntityType Name="AssignedEmployeeIncome">
+          <Key>
+            <PropertyRef Name="AssignedEmployeeIncomeID" />
+          </Key>
+          <Property Name="AssignedEmployeeIncomeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncomeId" Type="Int32" Nullable="false" />
+          <Property Name="IncomeAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="UserPersonalInformationID" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="AssignedEmployeeDeduction">
           <Key>
             <PropertyRef Name="AssignedEmployeeDeductionID" />
@@ -248,7 +249,6 @@
           <Property Name="AssignedEmployeeDeductionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DeductionId" Type="Int32" Nullable="false" />
           <Property Name="DeductionAmount" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CustomAmount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="UserPersonalInformationID" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
@@ -257,17 +257,6 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="PayrollModelStoreContainer" CdmEntityContainer="PayrollEntities">
-          <EntitySetMapping Name="Deductions">
-            <EntityTypeMapping TypeName="PayrollModel.Deduction">
-              <MappingFragment StoreEntitySet="Deduction">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="DeductionId" ColumnName="DeductionId" />
-                <ScalarProperty Name="DeductionValue" ColumnName="DeductionValue" />
-                <ScalarProperty Name="DeductionName" ColumnName="DeductionName" />
-                <ScalarProperty Name="DeductionDescription" ColumnName="DeductionDescription" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Departments">
             <EntityTypeMapping TypeName="PayrollModel.Department">
               <MappingFragment StoreEntitySet="Department">
@@ -275,17 +264,6 @@
                 <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
                 <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
                 <ScalarProperty Name="DepartmentDescription" ColumnName="DepartmentDescription" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Incomes">
-            <EntityTypeMapping TypeName="PayrollModel.Income">
-              <MappingFragment StoreEntitySet="Income">
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
-                <ScalarProperty Name="IncomeValue" ColumnName="IncomeValue" />
-                <ScalarProperty Name="IncomeName" ColumnName="IncomeName" />
-                <ScalarProperty Name="IncomeDescription" ColumnName="IncomeDescription" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -337,17 +315,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="AssignedEmployeeIncomes">
-            <EntityTypeMapping TypeName="PayrollModel.AssignedEmployeeIncome">
-              <MappingFragment StoreEntitySet="AssignedEmployeeIncome">
-                <ScalarProperty Name="UserPersonalInformationID" ColumnName="UserPersonalInformationID" />
-                <ScalarProperty Name="CustomAmount" ColumnName="CustomAmount" />
-                <ScalarProperty Name="IncomeAmount" ColumnName="IncomeAmount" />
-                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
-                <ScalarProperty Name="AssignedEmployeeIncomeID" ColumnName="AssignedEmployeeIncomeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserPersonalInformations">
             <EntityTypeMapping TypeName="PayrollModel.UserPersonalInformation">
               <MappingFragment StoreEntitySet="UserPersonalInformation">
@@ -365,11 +332,44 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Incomes">
+            <EntityTypeMapping TypeName="PayrollModel.Income">
+              <MappingFragment StoreEntitySet="Income">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IncomeDescription" ColumnName="IncomeDescription" />
+                <ScalarProperty Name="IncomeName" ColumnName="IncomeName" />
+                <ScalarProperty Name="IncomeValue" ColumnName="IncomeValue" />
+                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Deductions">
+            <EntityTypeMapping TypeName="PayrollModel.Deduction">
+              <MappingFragment StoreEntitySet="Deduction">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="DeductionDescription" ColumnName="DeductionDescription" />
+                <ScalarProperty Name="DeductionName" ColumnName="DeductionName" />
+                <ScalarProperty Name="DeductionValue" ColumnName="DeductionValue" />
+                <ScalarProperty Name="DeductionId" ColumnName="DeductionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssignedEmployeeIncomes">
+            <EntityTypeMapping TypeName="PayrollModel.AssignedEmployeeIncome">
+              <MappingFragment StoreEntitySet="AssignedEmployeeIncome">
+                <ScalarProperty Name="UserPersonalInformationID" ColumnName="UserPersonalInformationID" />
+                <ScalarProperty Name="IncomeAmount" ColumnName="IncomeAmount" />
+                <ScalarProperty Name="IncomeId" ColumnName="IncomeId" />
+                <ScalarProperty Name="AssignedEmployeeIncomeID" ColumnName="AssignedEmployeeIncomeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AssignedEmployeeDeductions">
             <EntityTypeMapping TypeName="PayrollModel.AssignedEmployeeDeduction">
               <MappingFragment StoreEntitySet="AssignedEmployeeDeduction">
                 <ScalarProperty Name="UserPersonalInformationID" ColumnName="UserPersonalInformationID" />
-                <ScalarProperty Name="CustomAmount" ColumnName="CustomAmount" />
                 <ScalarProperty Name="DeductionAmount" ColumnName="DeductionAmount" />
                 <ScalarProperty Name="DeductionId" ColumnName="DeductionId" />
                 <ScalarProperty Name="AssignedEmployeeDeductionID" ColumnName="AssignedEmployeeDeductionID" />

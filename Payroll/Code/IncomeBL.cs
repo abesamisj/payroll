@@ -15,7 +15,7 @@ namespace Payroll.Code
             {
                 var query = from b in db.Incomes
                             where b.Active == 1
-                            orderby b.Active descending
+                            orderby b.Order, b.Active ascending
                             select b;
 
                 return query.ToList();
@@ -29,7 +29,7 @@ namespace Payroll.Code
             {
                 var query = from b in db.Incomes
                             where b.Active == 1
-                            orderby b.Active descending
+                            orderby b.Order, b.Active ascending
                             select b;
 
                 foreach (var item in query)
@@ -45,7 +45,7 @@ namespace Payroll.Code
             using (var db = new PayrollEntities())
             {
                 var query = from b in db.Incomes
-                            orderby b.Active descending
+                            orderby b.Order, b.Active ascending
                             select b;
 
                 return query.ToList();
@@ -84,6 +84,7 @@ namespace Payroll.Code
                     result.IncomeDescription = income.IncomeDescription;
                     result.IncomeName = income.IncomeName;
                     result.IncomeValue = income.IncomeValue;
+                    result.Order = income.Order;
                     db.SaveChanges();
                 }
             }

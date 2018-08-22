@@ -19,5 +19,6 @@ namespace Payroll.Data
         public string IncomeName { get; set; }
         public string IncomeDescription { get; set; }
         public Nullable<int> Active { get; set; }
+        public Nullable<int> Order { get; set; }
     }
 }

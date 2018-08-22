@@ -3,8 +3,6 @@ using Payroll.Data;
 using Payroll.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Payroll.Controllers
@@ -30,6 +28,7 @@ namespace Payroll.Controllers
                 model.DeductionId = item.DeductionId;
                 model.DeductionName = item.DeductionName;
                 model.DeductionValue = item.DeductionValue;
+                model.Order = item.Order;
                 listModels.Add(model);
             }
 
@@ -48,7 +47,7 @@ namespace Payroll.Controllers
             model.DeductionId = deduction.DeductionId;
             model.DeductionName = deduction.DeductionName;
             model.DeductionValue = deduction.DeductionValue;
-
+            model.Order = deduction.Order;
             return View(model);
         }
 
@@ -73,7 +72,7 @@ namespace Payroll.Controllers
                     toDB.DeductionDescription = collection.DeductionDescription;
                     toDB.DeductionName = collection.DeductionName;
                     toDB.DeductionValue = collection.DeductionValue;
-
+                    toDB.Order = collection.Order;
                     deductionBL.InsertDeduction(toDB);
 
                     return RedirectToAction("Index");
@@ -103,7 +102,7 @@ namespace Payroll.Controllers
             model.DeductionId = deduction.DeductionId;
             model.DeductionName = deduction.DeductionName;
             model.DeductionValue = deduction.DeductionValue;
-
+            model.Order = deduction.Order;
             return View(model);
         }
 
@@ -128,7 +127,7 @@ namespace Payroll.Controllers
                     toDB.DeductionName = viewModel.DeductionName;
                     toDB.DeductionValue = viewModel.DeductionValue;
                     toDB.DeductionId = viewModel.DeductionId;
-
+                    toDB.Order = viewModel.Order;
                     deductionBL.UpdateDeduction(toDB);
 
                     return RedirectToAction("Index");

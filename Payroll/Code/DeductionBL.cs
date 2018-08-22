@@ -12,7 +12,7 @@ namespace Payroll.Code
             {
                 var query = from b in db.Deductions
                             where b.Active == 1
-                            orderby b.Active descending
+                            orderby b.Order, b.Active ascending
                             select b;
 
                 return query.ToList();
@@ -24,7 +24,7 @@ namespace Payroll.Code
             using (var db = new PayrollEntities())
             {
                 var query = from b in db.Deductions
-                            orderby b.Active descending
+                            orderby b.Order, b.Active ascending
                             select b;
 
                 return query.ToList();
@@ -62,6 +62,7 @@ namespace Payroll.Code
                     result.DeductionDescription = deduction.DeductionDescription;
                     result.DeductionName = deduction.DeductionName;
                     result.DeductionValue = deduction.DeductionValue;
+                    result.Order = deduction.Order;
                     db.SaveChanges();
                 }
             }

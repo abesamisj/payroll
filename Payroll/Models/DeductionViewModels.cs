@@ -12,7 +12,7 @@ namespace Payroll.Models
 
         [Required]
         [Display(Name = "Amount")]
-        [RegularExpression(@"^\d+.\d{0,2}$", ErrorMessage = "Amount can't have more than 2 decimal places")]
+        [RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid Amount")]
         public decimal? DeductionValue { get; set; }
 
         [Required]
@@ -25,5 +25,10 @@ namespace Payroll.Models
 
         [Display(Name = "Status")]
         public bool Active { get; set; }
+
+        [Required]
+        [Display(Name = "Order")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter valid integer Number")]
+        public int? Order { get; set; }
     }
 }
