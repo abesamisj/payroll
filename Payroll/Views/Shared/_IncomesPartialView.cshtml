@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Payroll.Models.PayrollTransactionIncomeViewModels>
+
+
+<table class="table">
+    <tr>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.DefaultIncomeName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomIncomeAmount)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.DefaultIncomeName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomIncomeAmount)
+        </td>
+    </tr>
+}
+
+</table>

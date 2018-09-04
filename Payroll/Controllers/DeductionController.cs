@@ -27,7 +27,7 @@ namespace Payroll.Controllers
                 model.DeductionDescription = item.DeductionDescription;
                 model.DeductionId = item.DeductionId;
                 model.DeductionName = item.DeductionName;
-                model.DeductionValue = item.DeductionValue;
+                //model.DeductionValue = item.DeductionValue;
                 model.Order = item.Order;
                 listModels.Add(model);
             }
@@ -46,7 +46,7 @@ namespace Payroll.Controllers
             model.DeductionDescription = deduction.DeductionDescription;
             model.DeductionId = deduction.DeductionId;
             model.DeductionName = deduction.DeductionName;
-            model.DeductionValue = deduction.DeductionValue;
+            //model.DeductionValue = deduction.DeductionValue;
             model.Order = deduction.Order;
             return View(model);
         }
@@ -71,7 +71,7 @@ namespace Payroll.Controllers
                     toDB.Active = 1;
                     toDB.DeductionDescription = collection.DeductionDescription;
                     toDB.DeductionName = collection.DeductionName;
-                    toDB.DeductionValue = collection.DeductionValue;
+                    //toDB.DeductionValue = collection.DeductionValue;
                     toDB.Order = collection.Order;
                     deductionBL.InsertDeduction(toDB);
 
@@ -101,7 +101,7 @@ namespace Payroll.Controllers
             model.DeductionDescription = deduction.DeductionDescription;
             model.DeductionId = deduction.DeductionId;
             model.DeductionName = deduction.DeductionName;
-            model.DeductionValue = deduction.DeductionValue;
+            //model.DeductionValue = deduction.DeductionValue;
             model.Order = deduction.Order;
             return View(model);
         }
@@ -125,7 +125,7 @@ namespace Payroll.Controllers
                     toDB.Active = active;
                     toDB.DeductionDescription = viewModel.DeductionDescription;
                     toDB.DeductionName = viewModel.DeductionName;
-                    toDB.DeductionValue = viewModel.DeductionValue;
+                    //toDB.DeductionValue = viewModel.DeductionValue;
                     toDB.DeductionId = viewModel.DeductionId;
                     toDB.Order = viewModel.Order;
                     deductionBL.UpdateDeduction(toDB);

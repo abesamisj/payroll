@@ -29,11 +29,13 @@ namespace Payroll.Data
         public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<PayrollPeriod> PayrollPeriods { get; set; }
-        public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
         public virtual DbSet<UserPersonalInformation> UserPersonalInformations { get; set; }
-        public virtual DbSet<Income> Incomes { get; set; }
-        public virtual DbSet<Deduction> Deductions { get; set; }
         public virtual DbSet<AssignedEmployeeIncome> AssignedEmployeeIncomes { get; set; }
         public virtual DbSet<AssignedEmployeeDeduction> AssignedEmployeeDeductions { get; set; }
+        public virtual DbSet<PayrollTransactionIncome> PayrollTransactionIncomes { get; set; }
+        public virtual DbSet<Income> Incomes { get; set; }
+        public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
+        public virtual DbSet<Deduction> Deductions { get; set; }
+        public virtual DbSet<PayrollTransactionDeduction> PayrollTransactionDeductions { get; set; }
     }
 }

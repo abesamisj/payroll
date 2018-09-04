@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Payroll.Models.PayrollTransactionDeductionViewModels>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DefaultDeductionName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomDeductionAmount)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DefaultDeductionName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomDeductionAmount)
+        </td>
+
+    </tr>
+}
+
+</table>

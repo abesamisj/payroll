@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Payroll.Models.EmployeeListModel>
+
+@{
+    ViewBag.Title = "Payroll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Payroll</h2>
+
+
+
+
+@foreach (var item in Model)
+{
+    <table class="table">
+        <tr>
+            <td>
+                @{
+                    Html.RenderPartial("_EmployeeDetailsPartialView", item.EmployeeDetailsPayrollViewModel);
+                }
+            </td>
+            <td>
+                @{
+                    Html.RenderPartial("_EmployeePayPeriodDetailsPartialView", item.EmployeePayPeriodDetailsPayrollViewModel);
+                }
+            <td>
+        </tr>
+    </table>
+
+    
+    <table class="table">
+        <tr>
+            <td>
+                @{
+                    Html.RenderPartial("_IncomesPartialView", item.Incomes);
+                }
+            </td>
+            <td>
+                @{
+                    Html.RenderPartial("_DeductionsPartialView", item.Deductions);
+                }
+            </td>
+        </tr>
+    </table>
+    <br />
+    <hr />
+}
+
+

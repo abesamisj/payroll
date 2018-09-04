@@ -35,6 +35,8 @@ namespace Payroll.Code
             }
         }
 
+        
+
         //public decimal GetAssignedEmployeeIncomesByIncomeId(int userPersonalInformationId, int incomeId)
         //{
         //    decimal returnValue = 0.0M;

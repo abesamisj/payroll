@@ -1,0 +1,49 @@
+﻿@model Payroll.Models.EmployeePayPeriodDetailsPayrollViewModel
+
+<div>
+    <h4>Employee Pay Period Details Payroll View Model</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @*<dt>
+            @Html.DisplayNameFor(model => model.PayPeriodId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayPeriodId)
+        </dd>*@
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Month)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Month)
+        </dd>
+
+        <dt>
+            Pay Period
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayPeriodFrom) to @Html.DisplayFor(model => model.PayPeriodTo)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentPeriodWorkDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentPeriodWorkDays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CurrentPeriodWorkHours)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CurrentPeriodWorkHours)
+        </dd>
+
+    </dl>
+</div>

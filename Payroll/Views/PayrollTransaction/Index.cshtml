@@ -1,31 +1,46 @@
-﻿@model IEnumerable<Payroll.Models.PayrollTransactionViewModels>
-@using GridMvc.Html
+﻿@model Payroll.Models.PayrollTransactionsPeriodViewModels
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Payroll Transactions</h2>
+<h2>Index</h2>
+@using (Html.BeginForm("Submit", "Home", FormMethod.Post, new { @name = "Form1" }))
+{
+    <p>@Html.DropDownListFor(n => n.PayrollPeriodId, Model.PayrollPeriods, "Please select a Pay Period", new { @id = "ddlStyle" })</p>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-div class="code-cut">
-@Html.Grid(Model).Columns(columns =>
-                {
-                    columns.Add(c => c.PayrollPeriodId).Titled("Payroll Period Id").Filterable(true);
-                    columns.Add(c => c.PayrollPeriodFrom).Titled("Payroll Period From").Format("{0:dd/MM/yyyy}").Filterable(true);
-                    columns.Add(c => c.Year).Titled("Year").Filterable(true);
-                    columns.Add(c => c.Month).Titled("Month").Filterable(true);
-                    columns.Add(c => c.PayPeriodFrom).Format("{0:dd/MM/yyyy}").Titled("Pay Period From");
-                    columns.Add(c => c.PayPeriodTo).Format("{0:dd/MM/yyyy}").Titled("Pay Period To");
-                    columns.Add(c => c.WorkDays).Titled("Work Days");
-                    columns.Add(c => c.WorkHours).Titled("Work Hours");
-                    columns.Add()
-                    .Encoded(false)
-                    .Sanitized(false)
-                    .SetWidth(30)
-                    .RenderValueAs(o => Html.ActionLink("Edit", "Edit", new { id = o.PayrollPeriodId }));
+    <!-- Place where you will insert your partial -->
+    <div id="partialPlaceHolder" style="display:none;"> </div>
+}
 
-                }).WithPaging(20).Sortable(true)
-</div>
+
+<script type="text/javascript">
+    /* This is change event for your dropdownlist */
+    $(this.document).ready(function () {
+        $('#ddlStyle').change(function () {
+
+            /* Get the selected value of dropdownlist */
+            var selectedID = $(this).val();
+            $.ajax({
+                  type: "POST",                               //The type of Method being used (GET, SET, POST, etc.)
+                   url: '@Url.Action("Incomes","PayrollTransaction")', //You can manually enter this as well
+                data: { id: ViewBag.Id, payrollPeriodId: selectedID },           //Your data to pass to your Controller action
+                  success: function(){
+                       //This function will be executed when
+                       //the event has completed
+                       alert("Done!");
+                  }
+            });
+        })
+    });
+        //jQuery for the DropDownList(s) Change Event
+        //$(this.document).ready(function () {
+        //    $('#ddlStyle').change(function () //wire up on change event of the 'country' dropdownlist
+        //    {
+        //        var selection = $("#ddlStyle").val(); //get the selection made in the dropdownlist
+        //        alert(selection);
+        //        //$('#results').load("/Location/Sites/" + selection); //return value of the url /locations/sites which is the action method to invoke.
+        //    })
+        //});
+</script>

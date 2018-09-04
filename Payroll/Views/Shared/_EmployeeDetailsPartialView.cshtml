@@ -1,0 +1,38 @@
+﻿@model Payroll.Models.EmployeeDetailsPayrollViewModel
+
+<div>
+    <h4>Employee Details Payroll View Model</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Department)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BasicPay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BasicPay)
+        </dd>
+
+    </dl>
+</div>

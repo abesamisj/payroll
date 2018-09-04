@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Payroll.Models
 {
     public class PayrollTransactionViewModels
     {
         public int PayrollTransactionId { get; set; }
+
         public int PayrollPeriodId { get; set; }
+        public SelectList PayrollPeriods { get; set; }
+
+        [Display(Name = "Selected Payroll Period")]
+        public string SelectedPayrollPeriod { get; set; }
+
         public int UserPersonalInformationId { get; set; }
-        public int? DepartmentId { get; set; }
-        public int? IncomeId { get; set; }
-        public decimal? CustomIncomeAmount { get; set; }
+
+
+        public List<PayrollTransactionIncomeViewModels> Incomes { get; set; }
+
 
         public int? DeductionId { get; set; }
         public decimal? CustomDeductionAmount { get; set; }
@@ -41,5 +50,11 @@ namespace Payroll.Models
         //deduction
         public string DeductionName { get; set; }
         public decimal? DeductionValue { get; set; }
+    }
+
+    public class PayrollTransactionsPeriodViewModels
+    {
+        public int PayrollPeriodId { get; set; }
+        public SelectList PayrollPeriods { get; set; }
     }
 }

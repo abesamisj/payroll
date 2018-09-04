@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace Payroll.Models
@@ -41,6 +43,48 @@ namespace Payroll.Models
 
         [Display(Name = "Department")]
         public string Department { get; set; }
+
+        public string Name { get; set; }
+
+        public List<PayrollTransactionIncomeViewModels> Incomes { get; set; }
+        public List<PayrollTransactionDeductionViewModels> Deductions { get; set; }
+
+        public EmployeeDetailsPayrollViewModel EmployeeDetailsPayrollViewModel { get; set; }
+        public EmployeePayPeriodDetailsPayrollViewModel EmployeePayPeriodDetailsPayrollViewModel { get; set; }
+    }
+
+    public class EmployeePayPeriodDetailsPayrollViewModel
+    {
+        public int PayPeriodId { get; set; }
+        [Display(Name = "Month")]
+        public string Month { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime PayPeriodFrom { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
+        public DateTime PayPeriodTo { get; set; }
+        [Display(Name = "Work Days")]
+        public decimal CurrentPeriodWorkDays { get; set; }
+        [Display(Name = "Work Hours")]
+        public decimal CurrentPeriodWorkHours { get; set; }
+    }
+
+    public class EmployeeDetailsPayrollViewModel
+    {
+        [Display(Name = "Employee Id")]
+        public string EmployeeId { get; set; }
+        [Display(Name = "Employee Name")]
+        public string Name { get; set; }
+        [Display(Name = "Department")]
+        public string Department { get; set; }
+        [Display(Name = "Basic Pay")]
+        public decimal BasicPay { get; set; }
+    }
+
+    public class EmployeeListPayrollPeriodViewModel
+    {
+        public List<EmployeeListModel> EmployeeList { get; set; }
+        public int PayrollPeriodId { get; set; }
+        public SelectList PayrollPeriods { get; set; }
 
     }
 
@@ -93,6 +137,7 @@ namespace Payroll.Models
         [Display(Name = "Income Name")]
         public string IncomeName { get; set; }
     }
+
 
     public class AssignedEmployeeDeductionsViewModel
     {

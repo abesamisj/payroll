@@ -10,10 +10,10 @@ namespace Payroll.Models
     {
         public int DeductionId { get; set; }
 
-        [Required]
-        [Display(Name = "Amount")]
-        [RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid Amount")]
-        public decimal? DeductionValue { get; set; }
+        //[Required]
+        //[Display(Name = "Amount")]
+        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid Amount")]
+        //public decimal? DeductionValue { get; set; }
 
         [Required]
         [StringLength(250, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 1)]

@@ -61,7 +61,7 @@ namespace Payroll.Code
                     result.Active = deduction.Active;
                     result.DeductionDescription = deduction.DeductionDescription;
                     result.DeductionName = deduction.DeductionName;
-                    result.DeductionValue = deduction.DeductionValue;
+                    //result.DeductionValue = deduction.DeductionValue;
                     result.Order = deduction.Order;
                     db.SaveChanges();
                 }

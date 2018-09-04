@@ -18,6 +18,18 @@ namespace Payroll.Code
                 return query.ToList();
             }
         }
+
+        public DateTime[] GetPayrollPeriodFrom()
+        {
+            using (var db = new PayrollEntities())
+            {
+                var query = (from b in db.PayrollPeriods
+                            orderby b.PayPeriodFrom descending
+                            select b.PayPeriodFrom).Distinct();
+
+                return query.ToArray();
+            }
+        }
         public PayrollPeriod GetPayrollPeriodById(int id)
         {
             using (var db = new PayrollEntities())

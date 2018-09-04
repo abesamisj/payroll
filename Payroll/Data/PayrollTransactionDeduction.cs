@@ -12,12 +12,12 @@ namespace Payroll.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Income
+    public partial class PayrollTransactionDeduction
     {
-        public int IncomeId { get; set; }
-        public string IncomeName { get; set; }
-        public string IncomeDescription { get; set; }
-        public Nullable<int> Active { get; set; }
-        public Nullable<int> Order { get; set; }
+        public int PayrollTransactionDeductionId { get; set; }
+        public Nullable<int> UserPersonalInformationid { get; set; }
+        public Nullable<int> PayrollPeriodId { get; set; }
+        public Nullable<int> DeductionId { get; set; }
+        public Nullable<decimal> CustomDeductionAmount { get; set; }
     }
 }

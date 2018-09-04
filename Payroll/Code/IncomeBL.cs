@@ -83,7 +83,7 @@ namespace Payroll.Code
                     result.Active = income.Active;
                     result.IncomeDescription = income.IncomeDescription;
                     result.IncomeName = income.IncomeName;
-                    result.IncomeValue = income.IncomeValue;
+                    //result.IncomeValue = income.IncomeValue;
                     result.Order = income.Order;
                     db.SaveChanges();
                 }

@@ -28,7 +28,7 @@ namespace Payroll.Controllers
                 model.IncomeDescription = item.IncomeDescription;
                 model.IncomeId = item.IncomeId;
                 model.IncomeName = item.IncomeName;
-                model.IncomeValue = item.IncomeValue;
+                //model.IncomeValue = item.IncomeValue;
                 model.Order = item.Order;
                 listModels.Add(model);
             }
@@ -47,7 +47,7 @@ namespace Payroll.Controllers
             model.IncomeDescription = income.IncomeDescription;
             model.IncomeId = income.IncomeId;
             model.IncomeName = income.IncomeName;
-            model.IncomeValue = income.IncomeValue;
+            //model.IncomeValue = income.IncomeValue;
             model.Order = income.Order;
             return View(model);
         }
@@ -72,7 +72,7 @@ namespace Payroll.Controllers
                     toDB.Active = 1;
                     toDB.IncomeDescription = collection.IncomeDescription;
                     toDB.IncomeName = collection.IncomeName;
-                    toDB.IncomeValue = collection.IncomeValue;
+                    //toDB.IncomeValue = collection.IncomeValue;
                     toDB.Order = collection.Order;
                     incomeBL.InsertIncome(toDB);
 
@@ -112,7 +112,7 @@ namespace Payroll.Controllers
                 viewModel.IncomeDescription = fromDB.IncomeDescription;
                 viewModel.IncomeId = fromDB.IncomeId;
                 viewModel.IncomeName = fromDB.IncomeName;
-                viewModel.IncomeValue = fromDB.IncomeValue;
+                //viewModel.IncomeValue = fromDB.IncomeValue;
                 viewModel.Order = fromDB.Order;
             }
             return View(viewModel);
@@ -137,7 +137,7 @@ namespace Payroll.Controllers
                     toDB.Active = active;
                     toDB.IncomeDescription = viewModel.IncomeDescription;
                     toDB.IncomeName = viewModel.IncomeName;
-                    toDB.IncomeValue = viewModel.IncomeValue;
+                    //toDB.IncomeValue = viewModel.IncomeValue;
                     toDB.IncomeId = viewModel.IncomeId;
                     toDB.Order = viewModel.Order;
                     incomeBL.UpdateIncome(toDB);

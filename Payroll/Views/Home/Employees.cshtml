@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Payroll.Models.EmployeeListModel>
+﻿@model Payroll.Models.EmployeeListPayrollPeriodViewModel
 @using GridMvc.Html
 @{
     ViewBag.Title = "Employees";
@@ -10,8 +10,18 @@
 <p>
     @Html.ActionLink("Create New", "CreateEmployee")
 </p>
+
+@using (Html.BeginForm("Payroll", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        Payroll Period: @Html.DropDownListFor(n => n.PayrollPeriodId, Model.PayrollPeriods, "Please select a Pay Period to ", new { @id = "ddlStyle" })
+        <input type="submit" value="Payroll" class="btn btn-default" />
+    </div>
+}
+
 <div class="code-cut">
-    @Html.Grid(Model).Columns(columns =>
+    @Html.Grid(Model.EmployeeList).Columns(columns =>
 {
     columns.Add(c => c.EmployeeId).Filterable(true)
     .Titled("Employee Id")
@@ -20,9 +30,7 @@
     .SetWidth(30).Filterable(true)
     .RenderValueAs(o => Html.ActionLink(o.EmployeeId, "EditEmployee", new { id = o.UserPersonalInformationID }));
 
-    columns.Add(c => c.FirstName).Titled("First Name").Filterable(true);
-    columns.Add(c => c.LastName).Titled("Last Name").Filterable(true);
-    columns.Add(c => c.Address).Titled("Address");
+    columns.Add(c => c.Name).Titled("Name").Filterable(true);
     columns.Add(c => c.Position).Titled("Position").Filterable(true);
     columns.Add(c => c.BasicPay).Titled("Basic Pay");
     columns.Add(c => c.Department).Titled("Department");
@@ -33,17 +41,18 @@
     .SetWidth(30)
     .RenderValueAs(o => Html.ActionLink("Department", "AssignDepartment", new { id = o.UserPersonalInformationID }));
 
-    columns.Add()
-    .Encoded(false)
-    .Sanitized(false)
-    .SetWidth(30)
-    .RenderValueAs(o => Html.ActionLink("Income", "AssignIncome", new { id = o.UserPersonalInformationID }));
+    //columns.Add()
+    //.Encoded(false)
+    //.Sanitized(false)
+    //.SetWidth(30)
+    //.RenderValueAs(o => Html.ActionLink("Income", "AssignIncome", new { id = o.UserPersonalInformationID }));
 
-    columns.Add()
+    //columns.Add()
 
-    .Encoded(false)
-    .Sanitized(false)
-    .SetWidth(30)
-    .RenderValueAs(o => Html.ActionLink("Deduction", "AssignDeduction", new { id = o.UserPersonalInformationID }));
+    //.Encoded(false)
+    //.Sanitized(false)
+    //.SetWidth(30)
+    //.RenderValueAs(o => Html.ActionLink("Deduction", "AssignDeduction", new { id = o.UserPersonalInformationID }));
+
 }).WithPaging(20).Sortable(true)
-</div> 
+</div>

@@ -1,4 +1,5 @@
 ﻿using Payroll.Code;
+using Payroll.CodeHelper;
 using Payroll.Data;
 using Payroll.Models;
 using System;
@@ -9,8 +10,8 @@ namespace Payroll.Controllers
 {
     public class HomeController : Controller
     {
+        HomeHelper homeHelper = new HomeHelper();
         EmployeeBL employeeBL = new EmployeeBL();
-
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
@@ -23,15 +24,12 @@ namespace Payroll.Controllers
             return View();
         }
 
-
-
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult CreateEmployee(EmployeeListModel viewModel)
         {
-
             if (ModelState.IsValid)
             {
                 if (employeeBL.CheckIfEmployeeIdExists(viewModel.EmployeeId))
@@ -41,15 +39,7 @@ namespace Payroll.Controllers
                 }
                 else
                 {
-                    UserPersonalInformation toDB = new UserPersonalInformation();
-                    toDB.Active = 1;
-                    toDB.Address = viewModel.Address;
-                    toDB.EmployeeId = viewModel.EmployeeId;
-                    toDB.FirstName = viewModel.FirstName;
-                    toDB.LastName = viewModel.LastName;
-                    toDB.Position = viewModel.Position;
-                    toDB.BasicPay = viewModel.BasicPay;
-                    employeeBL.InsertEmployee(toDB);
+                    homeHelper.CreateEmployee(viewModel);
                 }
             }
             else
@@ -63,11 +53,18 @@ namespace Payroll.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Employees()
         {
+            EmployeeListPayrollPeriodViewModel employeeListPayrollPeriod = new EmployeeListPayrollPeriodViewModel();
+
             List<EmployeeListModel> employeeListModels = new List<EmployeeListModel>();
             EmployeeListModel employee = new EmployeeListModel();
             DepartmentBL department = new DepartmentBL();
             List<UserPersonalInformation> listFromDB = employeeBL.GetAllEmployees();
 
+
+            PayrollPeriodBL payrollPeriodBL = new PayrollPeriodBL();
+            List<PayrollPeriod> payrollPeriods = new List<PayrollPeriod>();
+            payrollPeriods = payrollPeriodBL.GetPayrollPeriods();
+            
             foreach (UserPersonalInformation item in listFromDB)
             {
                 employee = new EmployeeListModel();
@@ -79,14 +76,232 @@ namespace Payroll.Controllers
                 employee.UserPersonalInformationID = item.UserPersonalInformationId;
                 employee.Position = item.Position;
                 employee.BasicPay = item.BasicPay;
+                employee.Name = item.FirstName + " " + employee.LastName;
                 if (item.DepartmentId > 0)
                 {
                     employee.Department = department.GetDepartmentById(item.DepartmentId).DepartmentName;
                 }
                 employeeListModels.Add(employee);
             }
+            employeeListPayrollPeriod.EmployeeList = employeeListModels;
+            employeeListPayrollPeriod.PayrollPeriods = new SelectList(payrollPeriods, "PayrollPeriodId", "PayPeriodFrom", 2);
+            return View(employeeListPayrollPeriod);
+        }
 
-            return View(employeeListModels);
+        [Authorize(Roles = "Admin")]
+        public ActionResult Payroll(FormCollection collection)
+        {
+
+            var payPeriodId = collection.GetValue("PayrollPeriodId").AttemptedValue;
+            if (ModelState.IsValid)
+            {
+                if (payPeriodId.ToString().Length > 0)
+                {
+                    List<EmployeeListModel> employeeListModels = new List<EmployeeListModel>();
+                    EmployeeListModel employee = new EmployeeListModel();
+                    DepartmentBL department = new DepartmentBL();
+                    List<UserPersonalInformation> listFromDB = employeeBL.GetAllEmployees();
+                    AssingedEmployeeIncomeBL assingedEmployeeIncomeBL = new AssingedEmployeeIncomeBL();
+                    List<AssignedEmployeeIncomesViewModel> assignEmployeeIncomeViewModelList = new List<AssignedEmployeeIncomesViewModel>();
+                    AssignedEmployeeIncomesViewModel assignEmployeeIncomeViewModel = new AssignedEmployeeIncomesViewModel();
+                    List<Income> incomeDBList = new List<Income>();
+                    Income incomeDB = new Income();
+                    IncomeBL incomeBL = new IncomeBL();
+
+                    PayrollPeriodBL payrollPeriodBL = new PayrollPeriodBL();
+                    PayrollPeriod payrollPeriodDB = new PayrollPeriod();
+
+                    List<Deduction> deductionDBList = new List<Deduction>();
+                    Deduction deductionDB = new Deduction();
+                    DeductionBL deductionBL = new DeductionBL();
+
+                    List<PayrollTransactionIncome> payrollTransactionIncomes = new List<PayrollTransactionIncome>();
+                    PayrollTransactionIncome payrollTransactionIncome = new PayrollTransactionIncome();
+                    PayrollTransactionIncomeBL payrollTransactionIncomeBL = new PayrollTransactionIncomeBL();
+
+                    PayrollTransactionDeduction payrollTransactionDeduction = new PayrollTransactionDeduction();
+                    PayrollTransactionDeductionBL payrollTransactionDeductionBL = new PayrollTransactionDeductionBL();
+
+                    List<PayrollTransactionDeductionViewModels> payrollTransactionDeductionViewModels = new List<PayrollTransactionDeductionViewModels>();
+                    PayrollTransactionDeductionViewModels payrollTransactionDeductionViewModel = new PayrollTransactionDeductionViewModels();
+
+                    List<PayrollTransactionIncomeViewModels> payrollTransactionIncomeViewModels = new List<PayrollTransactionIncomeViewModels>();
+                    PayrollTransactionIncomeViewModels payrollTransactionIncomeViewModel = new PayrollTransactionIncomeViewModels();
+
+                    foreach (UserPersonalInformation item in listFromDB)
+                    {
+                        employee = new EmployeeListModel();
+                        employee.Active = Convert.ToBoolean(item.Active);
+                        employee.Address = item.Address;
+                        employee.EmployeeId = item.EmployeeId;
+                        employee.FirstName = item.FirstName;
+                        employee.LastName = item.LastName;
+                        employee.UserPersonalInformationID = item.UserPersonalInformationId;
+                        employee.Position = item.Position;
+                        employee.BasicPay = item.BasicPay;
+                        employee.Name = item.FirstName + " " + employee.LastName;
+
+
+                        #region incomes
+                        incomeDBList = incomeBL.GetActiveIncomes();
+                        if (incomeDBList != null)
+                        {
+                            foreach (var dbIncome in incomeDBList)
+                            {
+                                payrollTransactionIncome = new PayrollTransactionIncome();
+                                payrollTransactionIncome = payrollTransactionIncomeBL.GetPayrollTransactionIncome(item.UserPersonalInformationId, Convert.ToInt32(payPeriodId), dbIncome.IncomeId);
+
+                                if (payrollTransactionIncome != null)
+                                {
+                                    payrollTransactionIncomeViewModel = new PayrollTransactionIncomeViewModels();
+                                    payrollTransactionIncomeViewModel.PayrollTransactionIncomeId = payrollTransactionIncome.PayrollTransactionIncomeId;
+                                    payrollTransactionIncomeViewModel.UserPersonalInformationid = item.UserPersonalInformationId;
+                                    payrollTransactionIncomeViewModel.PayrollPeriodId = Convert.ToInt32(payPeriodId);
+
+
+                                    incomeDB = incomeBL.GetIncomesById(Convert.ToInt32(payrollTransactionIncome.IncomeId));
+                                    payrollTransactionIncomeViewModel.IncomeId = Convert.ToInt32(payrollTransactionIncome.IncomeId);
+                                    payrollTransactionIncomeViewModel.CustomIncomeAmount = payrollTransactionIncome.CustomIncomeAmount > 0 ? Convert.ToDecimal(payrollTransactionIncome.CustomIncomeAmount) : 0.0M;
+                                    //payrollTransactionIncomeViewModel.DefaultIncomeAmount = dbIncome.IncomeAmount > 0 ? Convert.ToDecimal(dbIncome.IncomeAmount) : 0.0M;
+                                    payrollTransactionIncomeViewModel.DefaultIncomeName = incomeDB.IncomeName;
+
+                                    payrollTransactionIncomeViewModels.Add(payrollTransactionIncomeViewModel);
+                                }
+                                else
+                                {
+                                    PayrollTransactionIncomeViewModels insertView = new PayrollTransactionIncomeViewModels();
+                                    insertView.CustomIncomeAmount = 0.0M;
+                                    insertView.PayrollTransactionIncomeId = 0;
+                                    insertView.UserPersonalInformationid = item.UserPersonalInformationId;
+
+                                    incomeDB = incomeBL.GetIncomesById(Convert.ToInt32(dbIncome.IncomeId));
+                                    insertView.IncomeId = Convert.ToInt32(dbIncome.IncomeId);
+                                    insertView.CustomIncomeAmount = 0.0M;
+                                    //insertView.DefaultIncomeAmount = dbIncome.IncomeAmount > 0 ? Convert.ToDecimal(dbIncome.IncomeAmount) : 0.0M;
+                                    insertView.DefaultIncomeName = incomeDB.IncomeName;
+                                    insertView.PayrollPeriodId = Convert.ToInt32(payPeriodId);
+
+                                    payrollTransactionIncome = new PayrollTransactionIncome();
+                                    payrollTransactionIncome = payrollTransactionIncomeBL.InsertPayrollTransactionIncomes(insertView);
+                                    insertView = new PayrollTransactionIncomeViewModels();
+                                    insertView.PayrollTransactionIncomeId = payrollTransactionIncome.PayrollTransactionIncomeId;
+                                    insertView.UserPersonalInformationid = item.UserPersonalInformationId;
+                                    insertView.PayrollPeriodId = Convert.ToInt32(payPeriodId);
+                                    insertView.IncomeId = Convert.ToInt32(payrollTransactionIncome.IncomeId);
+                                    insertView.CustomIncomeAmount = payrollTransactionIncome.CustomIncomeAmount > 0 ? Convert.ToDecimal(payrollTransactionIncome.CustomIncomeAmount) : 0.0M;
+                                    //insertView.DefaultIncomeAmount = dbIncome.IncomeAmount > 0 ? Convert.ToDecimal(dbIncome.IncomeAmount) : 0.0M;
+                                    insertView.DefaultIncomeName = incomeDB.IncomeName;
+                                    payrollTransactionIncomeViewModels.Add(insertView);
+                                }
+                            }
+                        }
+                        #endregion
+
+                        #region deductions
+                        deductionDBList = deductionBL.GetActiveDeductions();
+                        if (deductionDBList != null)
+                        {
+                            foreach (var dbDeduction in deductionDBList)
+                            {
+                                payrollTransactionDeduction = new PayrollTransactionDeduction();
+                                payrollTransactionDeduction = payrollTransactionDeductionBL.GetPayrollTransactionDeduction(item.UserPersonalInformationId, Convert.ToInt32(payPeriodId), dbDeduction.DeductionId);
+
+                                if (payrollTransactionDeduction != null)
+                                {
+                                    payrollTransactionDeductionViewModel = new PayrollTransactionDeductionViewModels();
+                                    payrollTransactionDeductionViewModel.PayrollTransactionDeductionId = payrollTransactionDeduction.PayrollTransactionDeductionId;
+                                    payrollTransactionDeductionViewModel.UserPersonalInformationid = item.UserPersonalInformationId;
+                                    payrollTransactionDeductionViewModel.PayrollPeriodId = Convert.ToInt32(payPeriodId);
+
+
+                                    deductionDB = deductionBL.GetDeductionById(Convert.ToInt32(payrollTransactionDeduction.DeductionId));
+                                    payrollTransactionDeductionViewModel.DeductionId = Convert.ToInt32(payrollTransactionDeduction.DeductionId);
+                                    payrollTransactionDeductionViewModel.CustomDeductionAmount = payrollTransactionDeduction.CustomDeductionAmount > 0 ? Convert.ToDecimal(payrollTransactionDeduction.CustomDeductionAmount) : 0.0M;
+                                    //payrollTransactionIncomeViewModel.DefaultIncomeAmount = dbIncome.IncomeAmount > 0 ? Convert.ToDecimal(dbIncome.IncomeAmount) : 0.0M;
+                                    payrollTransactionDeductionViewModel.DefaultDeductionName = deductionDB.DeductionName;
+
+                                    payrollTransactionDeductionViewModels.Add(payrollTransactionDeductionViewModel);
+                                }
+                                else
+                                {
+                                    PayrollTransactionDeductionViewModels deductionView = new PayrollTransactionDeductionViewModels();
+                                    deductionView.CustomDeductionAmount = 0.0M;
+                                    deductionView.PayrollTransactionDeductionId = 0;
+                                    deductionView.UserPersonalInformationid = item.UserPersonalInformationId;
+
+                                    deductionDB = deductionBL.GetDeductionById(Convert.ToInt32(dbDeduction.DeductionId));
+                                    deductionView.DeductionId = Convert.ToInt32(dbDeduction.DeductionId);
+                                    deductionView.CustomDeductionAmount = 0.0M;
+                                    //insertView.DefaultIncomeAmount = dbIncome.IncomeAmount > 0 ? Convert.ToDecimal(dbIncome.IncomeAmount) : 0.0M;
+                                    deductionView.DefaultDeductionName = incomeDB.IncomeName;
+                                    deductionView.PayrollPeriodId = Convert.ToInt32(payPeriodId);
+
+                                    payrollTransactionDeduction = new PayrollTransactionDeduction();
+                                    payrollTransactionDeduction = payrollTransactionDeductionBL.InsertPayrollTransactionDeductions(deductionView);
+                                    deductionView = new PayrollTransactionDeductionViewModels();
+                                    deductionView.PayrollTransactionDeductionId = payrollTransactionDeduction.PayrollTransactionDeductionId;
+                                    deductionView.UserPersonalInformationid = item.UserPersonalInformationId;
+                                    deductionView.PayrollPeriodId = Convert.ToInt32(payPeriodId);
+                                    deductionView.DeductionId = Convert.ToInt32(payrollTransactionDeduction.DeductionId);
+                                    deductionView.CustomDeductionAmount = payrollTransactionDeduction.CustomDeductionAmount > 0 ? Convert.ToDecimal(payrollTransactionDeduction.CustomDeductionAmount) : 0.0M;
+                                    //insertView.DefaultIncomeAmount = dbIncome.IncomeAmount > 0 ? Convert.ToDecimal(dbIncome.IncomeAmount) : 0.0M;
+                                    deductionView.DefaultDeductionName = incomeDB.IncomeName;
+                                    payrollTransactionDeductionViewModels.Add(deductionView);
+                                }
+                            }
+                        }
+                        #endregion
+
+                        employee.Incomes = payrollTransactionIncomeViewModels;
+                        payrollTransactionIncomeViewModels = new List<PayrollTransactionIncomeViewModels>();
+                        employee.Deductions = payrollTransactionDeductionViewModels;
+                        payrollTransactionDeductionViewModels = new List<PayrollTransactionDeductionViewModels>();
+
+                        if (item.DepartmentId > 0)
+                        {
+                            employee.Department = department.GetDepartmentById(item.DepartmentId).DepartmentName;
+                        }
+
+
+                        #region EmployeeDetailsPayrollViewModel
+                        EmployeeDetailsPayrollViewModel employeeDetailsPayrollViewModel = new EmployeeDetailsPayrollViewModel();
+                        employeeDetailsPayrollViewModel.BasicPay = employee.BasicPay > 0 ? Convert.ToDecimal(employee.BasicPay) : 0.0M;
+                        employeeDetailsPayrollViewModel.Department = employee.Department;
+                        employeeDetailsPayrollViewModel.EmployeeId = employee.EmployeeId;
+                        employeeDetailsPayrollViewModel.Name = employee.Name;
+
+                        #endregion
+
+                        #region EmployeePayPeriodDetailsPayrollViewModel
+                        payrollPeriodDB = payrollPeriodBL.GetPayrollPeriodById(Convert.ToInt32(payPeriodId));
+                        EmployeePayPeriodDetailsPayrollViewModel employeePayPeriodDetailsPayrollViewModel = new EmployeePayPeriodDetailsPayrollViewModel();
+                        employeePayPeriodDetailsPayrollViewModel.CurrentPeriodWorkDays = payrollPeriodDB.WorkDays > 0 ? Convert.ToDecimal(payrollPeriodDB.WorkDays) : 0.0M;
+                        employeePayPeriodDetailsPayrollViewModel.CurrentPeriodWorkHours = payrollPeriodDB.WorkHours > 0 ? Convert.ToDecimal(payrollPeriodDB.WorkHours) : 0.0M; ;
+                        employeePayPeriodDetailsPayrollViewModel.Month = payrollPeriodDB.Month;
+                        employeePayPeriodDetailsPayrollViewModel.PayPeriodFrom = payrollPeriodDB.PayPeriodFrom;
+                        employeePayPeriodDetailsPayrollViewModel.PayPeriodTo = payrollPeriodDB.PayPeriodTo;
+                        employeePayPeriodDetailsPayrollViewModel.PayPeriodId = Convert.ToInt32(payPeriodId);
+                        #endregion
+
+
+                        employee.EmployeeDetailsPayrollViewModel = employeeDetailsPayrollViewModel;
+                        employee.EmployeePayPeriodDetailsPayrollViewModel = employeePayPeriodDetailsPayrollViewModel;
+                        employeeListModels.Add(employee);
+                    }
+
+                    return View(employeeListModels);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Choose a pay period.");
+                    return RedirectToAction("Employees", "Home");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Choose a pay period.");
+                return RedirectToAction("Employees", "Home");
+            }
         }
 
         [Authorize(Roles = "Admin")]
@@ -94,33 +309,8 @@ namespace Payroll.Controllers
         {
             EmployeeListModel viewModel = new EmployeeListModel();
             if (ModelState.IsValid)
-            { 
-                
-                UserPersonalInformation fromDB = employeeBL.GetEmployeesById(id);
-                DepartmentBL department = new DepartmentBL();
-                bool active = false;
-
-                if (fromDB.Active > 0)
-                {
-                    active = true;
-                }
-
-                if (fromDB != null)
-                {
-                    viewModel = new EmployeeListModel();
-                    viewModel.Active = active;
-                    viewModel.Address = fromDB.Address;
-                    viewModel.EmployeeId = fromDB.EmployeeId;
-                    viewModel.FirstName = fromDB.FirstName;
-                    viewModel.LastName = fromDB.LastName;
-                    viewModel.Position = fromDB.Position;
-                    viewModel.BasicPay = fromDB.BasicPay;
-                    viewModel.UserPersonalInformationID = fromDB.UserPersonalInformationId;
-                    if (fromDB.DepartmentId > 0)
-                    {
-                        viewModel.Department = department.GetDepartmentById(fromDB.DepartmentId).DepartmentName;
-                    }
-                }
+            {
+                viewModel = homeHelper.GetEmployee(id);
             }
             else
             {
@@ -133,33 +323,7 @@ namespace Payroll.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult ViewEmployee(int id)
         {
-            EmployeeListModel viewModel = new EmployeeListModel();
-            UserPersonalInformation fromDB = employeeBL.GetEmployeesById(id);
-            DepartmentBL department = new DepartmentBL();
-            bool active = false;
-
-            if (fromDB.Active > 0)
-            {
-                active = true;
-            }
-
-            if (fromDB != null)
-            {
-                viewModel = new EmployeeListModel();
-                viewModel.Active = active;
-                viewModel.Address = fromDB.Address;
-                viewModel.EmployeeId = fromDB.EmployeeId;
-                viewModel.FirstName = fromDB.FirstName;
-                viewModel.LastName = fromDB.LastName;
-                viewModel.Position = fromDB.Position;
-                viewModel.BasicPay = fromDB.BasicPay;
-                viewModel.UserPersonalInformationID = fromDB.UserPersonalInformationId;
-                if (fromDB.DepartmentId > 0)
-                {
-                    viewModel.Department = department.GetDepartmentById(fromDB.DepartmentId).DepartmentName;
-                }
-            }
-            return View(viewModel);
+            return View(homeHelper.GetEmployee(id));
         }
 
         [Authorize(Roles = "Admin")]
@@ -169,24 +333,7 @@ namespace Payroll.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                int active = 0;
-                if (viewModel.Active)
-                {
-                    active = 1;
-                }
-                UserPersonalInformation toDB = new UserPersonalInformation();
-                toDB.Active = active;
-                toDB.Address = viewModel.Address;
-                toDB.EmployeeId = viewModel.EmployeeId;
-                toDB.FirstName = viewModel.FirstName;
-                toDB.LastName = viewModel.LastName;
-                toDB.Position = viewModel.Position;
-                toDB.BasicPay = viewModel.BasicPay;
-                toDB.UserPersonalInformationId = viewModel.UserPersonalInformationID;
-
-                employeeBL.UpdateEmployee(toDB);
-
+                homeHelper.UpdateEmployee(viewModel);
             }
             else
             {
@@ -257,38 +404,9 @@ namespace Payroll.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult AssignIncome(int id)
         {
-            IncomeBL incomeBL = new IncomeBL();
-            Income income = new Income();
-            AssingedEmployeeIncomeBL assingedEmployeeIncomeBL = new AssingedEmployeeIncomeBL();
-
-
             List<AssignedEmployeeIncomesViewModel> assignEmployeeIncomeViewModelList = new List<AssignedEmployeeIncomesViewModel>();
-            AssignedEmployeeIncomesViewModel assignEmployeeIncomeViewModel = new AssignedEmployeeIncomesViewModel();
-         
-
-            UserPersonalInformation employee = employeeBL.GetEmployeesById(id);
-            string name = employee.FirstName + " " + employee.LastName;
-
-            List<AssignedEmployeeIncome> fromDB = assingedEmployeeIncomeBL.GetAssignedEmployeeIncomes(id);
-
-            if (fromDB != null)
-            {
-                foreach (var item in fromDB)
-                {
-                    assignEmployeeIncomeViewModel = new AssignedEmployeeIncomesViewModel();
-                    assignEmployeeIncomeViewModel.Name = name;
-                    assignEmployeeIncomeViewModel.AssignedEmployeeIncomeId = item.AssignedEmployeeIncomeID;
-                    //assignEmployeeIncomeViewModel.CustomIncomeAmount = item.CustomAmount;
-                    assignEmployeeIncomeViewModel.IncomeAmount = item.IncomeAmount;
-                    assignEmployeeIncomeViewModel.IncomeId = item.IncomeId;
-                    income = incomeBL.GetIncomesById(item.IncomeId);
-                    assignEmployeeIncomeViewModel.IncomeName = income.IncomeName;
-                    assignEmployeeIncomeViewModel.UserPersonalInformationId = item.UserPersonalInformationID;
-
-                    assignEmployeeIncomeViewModelList.Add(assignEmployeeIncomeViewModel);
-                }
-
-            }
+            string name = "";
+            assignEmployeeIncomeViewModelList = homeHelper.AssignIncome(id, out name);
             ViewBag.Name = name;
             ViewBag.Id = id;
             return View(assignEmployeeIncomeViewModelList);
@@ -323,12 +441,19 @@ namespace Payroll.Controllers
             toModel.UserPersonalInformationId = fromModel.UserPersonalInformationId;
             toModel.IncomeId = fromModel.IncomeId;
             toModel.Name = fromModel.Name;
-            //toModel.SelectedCustomAmount = fromModel.SelectedCustomAmount;
+            //toModel.SelectedIncomeAmount = fromModel.SelectedIncomeAmount;
 
             income = bL.GetIncomesById(fromModel.IncomeId);
             if (income != null)
             {
-                toModel.SelectedIncomeAmount = income.IncomeValue;
+                if (fromModel.SelectedIncomeAmount > 0)
+                {
+                    toModel.SelectedIncomeAmount = fromModel.SelectedIncomeAmount;
+                }
+                else
+                {
+                    toModel.SelectedIncomeAmount = 0.0M;
+                }
                 toModel.SelectedIncomeName = income.IncomeName;
             }
             else
@@ -362,8 +487,6 @@ namespace Payroll.Controllers
 
                         assingedEmployeeIncomeBL.AddEmployeeIncome(toDB);
                     }
-
-
                 }
                 else
                 {
@@ -388,13 +511,13 @@ namespace Payroll.Controllers
             Income income = new Income();
             IncomeBL bL = new IncomeBL();
             AddIncomeViewModel viewModels = new AddIncomeViewModel();
-            EmployeeBL employeeBL = new EmployeeBL();
+
             viewModels.UserPersonalInformationId = id;
             income = bL.GetIncomesById(incomeId);
             //viewModels.SelectedCustomAmount = assingedEmployeeIncomeBL.GetAssignedEmployeeIncomesByIncomeId(id, incomeId);
             if (income != null)
             {
-                viewModels.SelectedIncomeAmount = income.IncomeValue;
+                //viewModels.SelectedIncomeAmount = income.IncomeValue;
                 viewModels.SelectedIncomeName = income.IncomeName;
             }
 
@@ -423,7 +546,7 @@ namespace Payroll.Controllers
             income = bL.GetIncomesById(fromModel.IncomeId);
             if (income != null)
             {
-                toModel.SelectedIncomeAmount = income.IncomeValue;
+                //toModel.SelectedIncomeAmount = income.IncomeValue;
                 toModel.SelectedIncomeName = income.IncomeName;
             }
             else
@@ -480,38 +603,9 @@ namespace Payroll.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult AssignDeduction(int id)
         {
-            DeductionBL deductionBL = new DeductionBL();
-            Deduction deduction = new Deduction();
-            AssignedEmployeeDeductionBL assingedEmployeeDeductionBL = new AssignedEmployeeDeductionBL();
-
-
             List<AssignedEmployeeDeductionsViewModel> assignEmployeeDeductionsViewModelList = new List<AssignedEmployeeDeductionsViewModel>();
-            AssignedEmployeeDeductionsViewModel assignEmployeeDeductionViewModel = new AssignedEmployeeDeductionsViewModel();
-
-
-            UserPersonalInformation employee = employeeBL.GetEmployeesById(id);
-            string name = employee.FirstName + " " + employee.LastName;
-
-            List<AssignedEmployeeDeduction> fromDB = assingedEmployeeDeductionBL.GetAssignedEmployeeDeductions(id);
-
-            if (fromDB != null)
-            {
-                foreach (var item in fromDB)
-                {
-                    assignEmployeeDeductionViewModel = new AssignedEmployeeDeductionsViewModel();
-                    assignEmployeeDeductionViewModel.Name = name;
-                    assignEmployeeDeductionViewModel.AssignedEmployeeDeductionsId = item.AssignedEmployeeDeductionID;
-                    //assignEmployeeDeductionViewModel.CustomIncomeAmount = item.CustomAmount;
-                    assignEmployeeDeductionViewModel.DeductionAmount = item.DeductionAmount;
-                    assignEmployeeDeductionViewModel.DeductionId = item.DeductionId;
-                    deduction = deductionBL.GetDeductionById(item.DeductionId);
-                    assignEmployeeDeductionViewModel.DeductionName = deduction.DeductionName;
-                    assignEmployeeDeductionViewModel.UserPersonalInformationId = item.UserPersonalInformationID;
-
-                    assignEmployeeDeductionsViewModelList.Add(assignEmployeeDeductionViewModel);
-                }
-
-            }
+            string name = "";
+            assignEmployeeDeductionsViewModelList = homeHelper.AssignDeduction(id, out name);
             ViewBag.Name = name;
             ViewBag.Id = id;
             return View(assignEmployeeDeductionsViewModelList);
@@ -551,7 +645,7 @@ namespace Payroll.Controllers
             deduction = bL.GetDeductionById(fromModel.DeductionId);
             if (deduction != null)
             {
-                toModel.SelectedDeductionAmount = deduction.DeductionValue;
+                toModel.SelectedDeductionAmount = 0.0M;
                 toModel.SelectedDeductionName = deduction.DeductionName;
             }
             else
@@ -611,13 +705,13 @@ namespace Payroll.Controllers
             Deduction deduction = new Deduction();
             DeductionBL bL = new DeductionBL();
             AddDeductionViewModel viewModels = new AddDeductionViewModel();
-            EmployeeBL employeeBL = new EmployeeBL();
+
             viewModels.UserPersonalInformationId = id;
             deduction = bL.GetDeductionById(deductionId);
             //viewModels.SelectedCustomAmount = assingedEmployeeBL.GetAssignedEmployeeDeductionsByDeductionId(id, deductionId);
             if (deduction != null)
             {
-                viewModels.SelectedDeductionAmount = deduction.DeductionValue;
+                //viewModels.SelectedDeductionAmount = deduction.DeductionValue;
                 viewModels.SelectedDeductionName = deduction.DeductionName;
             }
 
@@ -646,7 +740,7 @@ namespace Payroll.Controllers
             deduction = bL.GetDeductionById(fromModel.DeductionId);
             if (deduction != null)
             {
-                toModel.SelectedDeductionAmount = deduction.DeductionValue;
+                toModel.SelectedDeductionAmount = 0.0M;
                 toModel.SelectedDeductionName = deduction.DeductionName;
             }
             else
@@ -695,6 +789,12 @@ namespace Payroll.Controllers
             AssignedEmployeeDeductionBL bl = new AssignedEmployeeDeductionBL();
             bl.DeleteDeduction(id, deductionId);
             return RedirectToAction("AssignDeduction", "Home", new { id = id });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult PayrollTransaction(int id)
+        {
+            return RedirectToAction("Index", "PayrollTransaction", new { id = id });
         }
     }
 }
