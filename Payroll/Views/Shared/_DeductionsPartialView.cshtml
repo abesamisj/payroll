@@ -12,12 +12,14 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    <tr> 
+
         <td>
             @Html.DisplayFor(modelItem => item.DefaultDeductionName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.CustomDeductionAmount)
+            @Html.EditorFor(modelItem => item.CustomDeductionAmount)
+            @Html.ValidationMessageFor(modelItem => item.CustomDeductionAmount, "", new { @class = "text-danger" })
         </td>
 
     </tr>

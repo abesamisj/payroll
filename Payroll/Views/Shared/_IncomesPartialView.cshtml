@@ -1,28 +1,32 @@
 ﻿@model IEnumerable<Payroll.Models.PayrollTransactionIncomeViewModels>
 
+@using (Html.BeginForm("Create", "Income", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
 
-<table class="table">
-    <tr>
 
+            <th>
+                @Html.DisplayNameFor(model => model.DefaultIncomeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomIncomeAmount)
+            </th>
+        </tr>
 
-        <th>
-            @Html.DisplayNameFor(model => model.DefaultIncomeName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CustomIncomeAmount)
-        </th>
-    </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                        @Html.DisplayFor(modelItem => item.DefaultIncomeName)
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => item.CustomIncomeAmount)
+                    @Html.ValidationMessageFor(modelItem => item.CustomIncomeAmount, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-
-        <td>
-            @Html.DisplayFor(modelItem => item.DefaultIncomeName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CustomIncomeAmount)
-        </td>
-    </tr>
+    </table>
 }
-
-</table>
